@@ -13,6 +13,7 @@
 
 /* Begin PBXFileReference section */
 		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
+		05672AA52F5DA9F1003F832E /* ShellKit.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShellKit.md; sourceTree = "<group>"; };
 		05E842FB2F5CF6490021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05E8430C2F5CFBA50021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -57,12 +58,22 @@
 			path = ../Source;
 			sourceTree = "<group>";
 		};
+		05672AA42F5DA995003F832E /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				05672AA52F5DA9F1003F832E /* ShellKit.md */,
+			);
+			name = Documents;
+			path = ../Documents;
+			sourceTree = "<group>";
+		};
 		05E842F12F5CF6490021856B = {
 			isa = PBXGroup;
 			children = (
 				05E842FD2F5CF6490021856B /* ShellKit_macOS */,
 				05E8430D2F5CFBA50021856B /* ShellKit_iOS */,
 				0556F9872F5D98C10087D410 /* Source */,
+				05672AA42F5DA995003F832E /* Documents */,
 				05E842FC2F5CF6490021856B /* Products */,
 			);
 			sourceTree = "<group>";
