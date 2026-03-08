@@ -42,11 +42,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0556F9872F5D98C10087D410 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Source;
+			path = ../Source;
+			sourceTree = "<group>";
+		};
 		05E842F12F5CF6490021856B = {
 			isa = PBXGroup;
 			children = (
 				05E842FD2F5CF6490021856B /* ShellKit_macOS */,
 				05E8430D2F5CFBA50021856B /* ShellKit_iOS */,
+				0556F9872F5D98C10087D410 /* Source */,
 				05E842FC2F5CF6490021856B /* Products */,
 			);
 			sourceTree = "<group>";
