@@ -7,25 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		054603DB2F5D9AC3005CFCF9 /* ShellKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* ShellKit.swift */; };
-		054603E12F5D9B3A005CFCF9 /* ShellKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* ShellKit.swift */; };
+		054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
+		054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		054603D92F5D9AC3005CFCF9 /* ShellKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellKit.swift; sourceTree = "<group>"; };
+		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
 		05E842FB2F5CF6490021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05E8430C2F5CFBA50021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		054603E02F5D9B34005CFCF9 /* Exceptions for "ShellKit_iOS" folder in "ShellKit_iOS" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				ShellKit.swift,
-			);
-			target = 05E8430B2F5CFBA50021856B /* ShellKit_iOS */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		05E842FD2F5CF6490021856B /* ShellKit_macOS */ = {
@@ -35,9 +25,6 @@
 		};
 		05E8430D2F5CFBA50021856B /* ShellKit_iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				054603E02F5D9B34005CFCF9 /* Exceptions for "ShellKit_iOS" folder in "ShellKit_iOS" target */,
-			);
 			path = ShellKit_iOS;
 			sourceTree = "<group>";
 		};
@@ -64,7 +51,7 @@
 		0556F9872F5D98C10087D410 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				054603D92F5D9AC3005CFCF9 /* ShellKit.swift */,
+				054603D92F5D9AC3005CFCF9 /* KSShell.swift */,
 			);
 			name = Source;
 			path = ../Source;
@@ -215,7 +202,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				054603DB2F5D9AC3005CFCF9 /* ShellKit.swift in Sources */,
+				054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				054603E12F5D9B3A005CFCF9 /* ShellKit.swift in Sources */,
+				054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
