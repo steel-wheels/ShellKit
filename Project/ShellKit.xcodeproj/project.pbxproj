@@ -9,11 +9,58 @@
 /* Begin PBXBuildFile section */
 		054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
+		05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
+		05DC6B1B2F66319D00E134DA /* MultiDataKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
+		05DC6B1E2F6631D000E134DA /* MultiDataKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		05DC6B242F66325200E134DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 05E842F22F5CF6490021856B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 05E8430B2F5CFBA50021856B;
+			remoteInfo = ShellKit_iOS;
+		};
+		05DC6B262F66325200E134DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 05E842F22F5CF6490021856B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 05E842FA2F5CF6490021856B;
+			remoteInfo = ShellKit_macOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		05DC6B1C2F66319D00E134DA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				05DC6B1B2F66319D00E134DA /* MultiDataKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		05DC6B1F2F6631D000E134DA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				05DC6B1E2F6631D000E134DA /* MultiDataKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
 		05672AA52F5DA9F1003F832E /* ShellKit.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShellKit.md; sourceTree = "<group>"; };
+		05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
 		05E842FB2F5CF6490021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05E8430C2F5CFBA50021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +116,14 @@
 			path = ../Documents;
 			sourceTree = "<group>";
 		};
+		05DC6B182F66319D00E134DA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		05E842F12F5CF6490021856B = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +131,7 @@
 				05E8430D2F5CFBA50021856B /* ShellKit_iOS */,
 				0556F9872F5D98C10087D410 /* Source */,
 				05672AA42F5DA995003F832E /* Documents */,
+				05DC6B182F66319D00E134DA /* Frameworks */,
 				05E842FC2F5CF6490021856B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,6 +164,27 @@
 		};
 /* End PBXHeadersBuildPhase section */
 
+/* Begin PBXLegacyTarget section */
+		05DC6B202F66324100E134DA /* Install */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-f ../Script/Install.mk";
+			buildConfigurationList = 05DC6B212F66324100E134DA /* Build configuration list for PBXLegacyTarget "Install" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "";
+			dependencies = (
+				05DC6B252F66325200E134DA /* PBXTargetDependency */,
+				05DC6B272F66325200E134DA /* PBXTargetDependency */,
+			);
+			name = Install;
+			packageProductDependencies = (
+			);
+			passBuildSettingsInEnvironment = 1;
+			productName = Install;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		05E842FA2F5CF6490021856B /* ShellKit_macOS */ = {
 			isa = PBXNativeTarget;
@@ -115,6 +194,7 @@
 				05E842F72F5CF6490021856B /* Sources */,
 				05E842F82F5CF6490021856B /* Frameworks */,
 				05E842F92F5CF6490021856B /* Resources */,
+				05DC6B1C2F66319D00E134DA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -138,6 +218,7 @@
 				05E843082F5CFBA50021856B /* Sources */,
 				05E843092F5CFBA50021856B /* Frameworks */,
 				05E8430A2F5CFBA50021856B /* Resources */,
+				05DC6B1F2F6631D000E134DA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -163,6 +244,9 @@
 				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 2630;
 				TargetAttributes = {
+					05DC6B202F66324100E134DA = {
+						CreatedOnToolsVersion = 26.3;
+					};
 					05E842FA2F5CF6490021856B = {
 						CreatedOnToolsVersion = 26.3;
 					};
@@ -187,6 +271,7 @@
 			targets = (
 				05E842FA2F5CF6490021856B /* ShellKit_macOS */,
 				05E8430B2F5CFBA50021856B /* ShellKit_iOS */,
+				05DC6B202F66324100E134DA /* Install */,
 			);
 		};
 /* End PBXProject section */
@@ -227,7 +312,47 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		05DC6B252F66325200E134DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 05E8430B2F5CFBA50021856B /* ShellKit_iOS */;
+			targetProxy = 05DC6B242F66325200E134DA /* PBXContainerItemProxy */;
+		};
+		05DC6B272F66325200E134DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 05E842FA2F5CF6490021856B /* ShellKit_macOS */;
+			targetProxy = 05DC6B262F66325200E134DA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		05DC6B222F66324100E134DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		05DC6B232F66324100E134DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TR2DNF3P93;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		05E843022F5CF6490021856B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -454,6 +579,9 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
@@ -492,6 +620,9 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
@@ -506,6 +637,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		05DC6B212F66324100E134DA /* Build configuration list for PBXLegacyTarget "Install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05DC6B222F66324100E134DA /* Debug */,
+				05DC6B232F66324100E134DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		05E842F52F5CF6490021856B /* Build configuration list for PBXProject "ShellKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
