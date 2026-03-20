@@ -11,10 +11,12 @@ import Foundation
 public class KSShell
 {
         private var mFileInterface:     MIFileInterface
+        private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
         private var mReadLine:          KSReadLine
 
         public init(fileInterface fileif: MIFileInterface) {
+                mDoExit         = false
                 mFileInterface  = fileif
                 mPrompt         = KSPrompt()
                 mReadLine       = KSReadLine(fileInterface: fileif)
@@ -24,7 +26,12 @@ public class KSShell
         }
 
         public func main() {
+                // print prompt
                 write(output: [ .insertString(mPrompt.string)])
+
+                while !mDoExit {
+                        Thread.sleep(forTimeInterval: 0.1)
+                }
         }
 
         public func write(output ecodes: Array<MIEscapeCode>){
@@ -35,9 +42,9 @@ public class KSShell
         private func receiveResponce(string str: String) {
                 switch MIEscapeCode.decode(string: str) {
                 case .success(let ecodes):
-                        let rescodes = mReadLine.decodeCodes(edcapeCodes: ecodes)
-                        if rescodes.count > 0 {
-                                write(output: rescodes)
+                        let rcodes = mReadLine.decodeCodes(edcapeCodes: ecodes)
+                        if rcodes.count > 0 {
+                                write(output: rcodes)
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
