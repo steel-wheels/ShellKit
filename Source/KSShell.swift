@@ -27,16 +27,11 @@ public class KSShell
 
         public func main() {
                 // print prompt
-                write(output: [ .insertString(mPrompt.string)])
+                write(output: [escapeCodeToPrintPrompt()])
 
                 while !mDoExit {
                         Thread.sleep(forTimeInterval: 0.1)
                 }
-        }
-
-        public func write(output ecodes: Array<MIEscapeCode>){
-                let str = ecodeToString(escapeCodes: ecodes)
-                mFileInterface.write(string: str)
         }
 
         private func receiveResponce(string str: String) {
@@ -46,10 +41,41 @@ public class KSShell
                         if rcodes.count > 0 {
                                 write(output: rcodes)
                         }
+                        let cmds = mReadLine.popCommands()
+                        if cmds.count > 0 {
+                                for cmd in cmds {
+                                        executeCommand(commandLine: cmd)
+                                }
+                        }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
-                        mFileInterface.error(string: "[Error] \(msg) at \(#file)")
+                        write(errort: [
+                                .insertString("[Error] \(msg) at \(#file)"),
+                                .newlineKey
+                        ])
                 }
+        }
+
+        private func escapeCodeToPrintPrompt() -> MIEscapeCode {
+                return .insertString(mPrompt.string)
+        }
+
+        private func executeCommand(commandLine str: String) {
+                write(errort: [
+                        .insertString("[Exec] \(str)"),
+                        .newlineKey,
+                        escapeCodeToPrintPrompt()
+                ])
+        }
+
+        public func write(output ecodes: Array<MIEscapeCode>){
+                let str = ecodeToString(escapeCodes: ecodes)
+                mFileInterface.write(string: str)
+        }
+
+        public func write(errort ecodes: Array<MIEscapeCode>){
+                let str = ecodeToString(escapeCodes: ecodes)
+                mFileInterface.error(string: str)
         }
 
         private func ecodeToString(escapeCodes ecodes: Array<MIEscapeCode>) -> String {

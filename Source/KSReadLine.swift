@@ -14,10 +14,13 @@ public class KSReadLine
         private var mCurrentPosition:   String.Index
         private var mCurrentLine:       String
 
+        private var mCommands:                  Array<String>
+
         public init(fileInterface fintf: MIFileInterface) {
                 mFileInterface          = fintf
                 mCurrentLine            = ""
                 mCurrentPosition        = mCurrentLine.startIndex
+                mCommands               = []
         }
 
         public func decodeCodes(edcapeCodes ecodes: Array<MIEscapeCode>) -> Array<MIEscapeCode> {
@@ -68,8 +71,8 @@ public class KSReadLine
                                 result.append(.moveCursorForward(off))
                                 result.append(.newlineKey)
 
-                                /* execute the command */
-                                executeCommand(string: mCurrentLine)
+                                /* push the command to execute later */
+                                mCommands.append(mCurrentLine)
 
                                 /* clear current command line */
                                 mCurrentLine     = ""
@@ -83,8 +86,10 @@ public class KSReadLine
                 return result
         }
 
-        private func executeCommand(string cmd: String) {
-                mFileInterface.error(string: "execute command: \(cmd)")
+        public func popCommands() -> Array<String> {
+                let cmds  = mCommands
+                mCommands = []
+                return cmds
         }
 
         private func showHistory(up doup: Bool) {
