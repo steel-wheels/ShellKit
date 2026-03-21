@@ -48,7 +48,7 @@ public class KSShell
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
-                        NSLog("[Error] \(msg) at \(#file)")
+                        mFileInterface.error(string: "[Error] \(msg) at \(#file)")
                 }
         }
 

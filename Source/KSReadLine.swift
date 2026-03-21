@@ -36,11 +36,8 @@ public class KSReadLine
                 case .insertString(let str):
                         let len = str.lengthOfBytes(using: .utf8)
                         mCurrentLine.insert(contentsOf: str, at: mCurrentPosition)
-                        let off = moveCursorForward(offset: len)
+                        let _ = moveCursorForward(offset: len)
                         result.append(.insertString(str))
-                        if off > 0 {
-                                result.append(.moveCursorForward(off))
-                        }
                 case .arrowKey(let key):
                         switch key {
                           case .up:
@@ -58,9 +55,9 @@ public class KSReadLine
                                         result.append(.moveCursorForward(len))
                                 }
                           @unknown default:
-                                NSLog("[Error] Can not happen at \(#file)")
+                                mFileInterface.error(string: "[Error] Can not happen at \(#file)")
                         }
-                case .carriageReturnKey:
+                case .newlineKey:
                         if !mCurrentLine.isEmpty {
                                 /* move cursor to end of line */
                                 var off = 0
@@ -69,7 +66,7 @@ public class KSReadLine
                                         off += 1
                                 }
                                 result.append(.moveCursorForward(off))
-                                result.append(.carriageReturnKey)
+                                result.append(.newlineKey)
 
                                 /* execute the command */
                                 executeCommand(string: mCurrentLine)
@@ -78,18 +75,20 @@ public class KSReadLine
                                 mCurrentLine     = ""
                                 mCurrentPosition = mCurrentLine.startIndex
                         }
+                case .moveCursorForward(_), .moveCursorBackward(_):
+                        result.append(ecode)
                 default:
-                        NSLog("ShellKit: Ununkown code: \(ecode.description())")
+                        mFileInterface.error(string: "ShellKit: Ununkown code: \(ecode.description())")
                 }
                 return result
         }
 
         private func executeCommand(string cmd: String) {
-                NSLog("execute command: \(cmd)")
+                mFileInterface.error(string: "execute command: \(cmd)")
         }
 
         private func showHistory(up doup: Bool) {
-                NSLog("Show history: \(doup)")
+                mFileInterface.error(string: "Show history: \(doup)")
         }
 
         private func moveCursorForward(offset off: Int) -> Int {
