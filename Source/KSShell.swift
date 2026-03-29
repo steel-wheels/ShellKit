@@ -2,7 +2,7 @@
  * @file KSShell.swift
  * @description Define KSShell
  * @par Copyright
- *   Copyright (C) 2025 Steel Wheels Project
+ *   Copyright (C) 2026 Steel Wheels Project
  */
 
 import MultiDataKit
