@@ -41,6 +41,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0507EFF62F79E8CF003CBDC0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		05DC6B1C2F66319D00E134DA /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -66,6 +75,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0507EFF82F79E8CF003CBDC0 /* UnitTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		05082E5B2F792FB90016C704 /* KSCommandLineParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandLineParser.swift; sourceTree = "<group>"; };
 		05082E762F7965160016C704 /* KSCommandToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandToken.swift; sourceTree = "<group>"; };
 		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
@@ -78,6 +88,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		0507EFF92F79E8CF003CBDC0 /* UnitTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = UnitTest;
+			sourceTree = "<group>";
+		};
 		05E842FD2F5CF6490021856B /* ShellKit_macOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ShellKit_macOS;
@@ -91,6 +106,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0507EFF52F79E8CF003CBDC0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		05E842F82F5CF6490021856B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -110,6 +132,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0507EFF32F79E83F003CBDC0 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				0507EFF92F79E8CF003CBDC0 /* UnitTest */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 		0556F9872F5D98C10087D410 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +178,7 @@
 				0556F9872F5D98C10087D410 /* Source */,
 				05672AA42F5DA995003F832E /* Documents */,
 				05DC6B182F66319D00E134DA /* Frameworks */,
+				0507EFF32F79E83F003CBDC0 /* Test */,
 				05E842FC2F5CF6490021856B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -157,6 +188,7 @@
 			children = (
 				05E842FB2F5CF6490021856B /* ShellKit.framework */,
 				05E8430C2F5CFBA50021856B /* ShellKit.framework */,
+				0507EFF82F79E8CF003CBDC0 /* UnitTest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,6 +234,28 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		0507EFF72F79E8CF003CBDC0 /* UnitTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0507EFFC2F79E8CF003CBDC0 /* Build configuration list for PBXNativeTarget "UnitTest" */;
+			buildPhases = (
+				0507EFF42F79E8CF003CBDC0 /* Sources */,
+				0507EFF52F79E8CF003CBDC0 /* Frameworks */,
+				0507EFF62F79E8CF003CBDC0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0507EFF92F79E8CF003CBDC0 /* UnitTest */,
+			);
+			name = UnitTest;
+			packageProductDependencies = (
+			);
+			productName = UnitTest;
+			productReference = 0507EFF82F79E8CF003CBDC0 /* UnitTest */;
+			productType = "com.apple.product-type.tool";
+		};
 		05E842FA2F5CF6490021856B /* ShellKit_macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 05E843042F5CF6490021856B /* Build configuration list for PBXNativeTarget "ShellKit_macOS" */;
@@ -257,9 +311,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2630;
 				TargetAttributes = {
+					0507EFF72F79E8CF003CBDC0 = {
+						CreatedOnToolsVersion = 26.4;
+					};
 					05DC6B202F66324100E134DA = {
 						CreatedOnToolsVersion = 26.3;
 					};
@@ -288,6 +345,7 @@
 				05E842FA2F5CF6490021856B /* ShellKit_macOS */,
 				05E8430B2F5CFBA50021856B /* ShellKit_iOS */,
 				05DC6B202F66324100E134DA /* Install */,
+				0507EFF72F79E8CF003CBDC0 /* UnitTest */,
 			);
 		};
 /* End PBXProject section */
@@ -310,6 +368,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0507EFF42F79E8CF003CBDC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		05E842F72F5CF6490021856B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -350,6 +415,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0507EFFD2F79E8CF003CBDC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		0507EFFE2F79E8CF003CBDC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		05DC6B222F66324100E134DA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -661,6 +754,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0507EFFC2F79E8CF003CBDC0 /* Build configuration list for PBXNativeTarget "UnitTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0507EFFD2F79E8CF003CBDC0 /* Debug */,
+				0507EFFE2F79E8CF003CBDC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		05DC6B212F66324100E134DA /* Build configuration list for PBXLegacyTarget "Install" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

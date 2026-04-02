@@ -49,7 +49,7 @@ public class KSShell
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
-                        write(errort: [
+                        write(error: [
                                 .insertString("[Error] \(msg) at \(#file)"),
                                 .newlineKey
                         ])
@@ -61,9 +61,22 @@ public class KSShell
         }
 
         private func executeCommand(commandLine str: String) {
-                write(errort: [
-                        .insertString("[Exec] \(str)"),
-                        .newlineKey,
+                switch KSCommandLineParser.parse(commandLine: str) {
+                case .success(let commands):
+                        for cmd in commands {
+                                write(error: [
+                                        .insertString(cmd.description),
+                                        .newlineKey
+                                ])
+                        }
+                case .failure(let err):
+                        let msg = MIError.errorToString(error: err)
+                        write(error: [
+                                .insertString(msg),
+                                .newlineKey
+                        ])
+                }
+                write(error: [
                         escapeCodeToPrintPrompt()
                 ])
         }
@@ -73,7 +86,7 @@ public class KSShell
                 mFileInterface.write(string: str)
         }
 
-        public func write(errort ecodes: Array<MIEscapeCode>){
+        public func write(error ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
                 mFileInterface.error(string: str)
         }

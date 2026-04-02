@@ -50,7 +50,7 @@ public class KSCommandToken
                         } else {
                                 if c == "\"" {
                                         isInString = false
-                                result.append(.string(currentString))
+                                        result.append(.string("\"" + currentString + "\""))
                                         currentString = ""
                                 } else {
                                         currentString.append(c)
