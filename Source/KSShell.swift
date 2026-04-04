@@ -10,17 +10,21 @@ import Foundation
 
 public class KSShell
 {
-        private var mFileInterface:     MIFileInterface
+        private var mInputFileHandle:   FileHandle
+        private var mOutputFileHandle:  FileHandle
+        private var mErrorFileHandle:   FileHandle
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
         private var mReadLine:          KSReadLine
 
-        public init(fileInterface fileif: MIFileInterface) {
-                mDoExit         = false
-                mFileInterface  = fileif
-                mPrompt         = KSPrompt()
-                mReadLine       = KSReadLine(fileInterface: fileif)
-                fileif.setReader(reader: {
+        public init(input infile: FileHandle, output outfile: FileHandle, error errfile: FileHandle) {
+                mDoExit                 = false
+                mInputFileHandle        = infile
+                mOutputFileHandle       = outfile
+                mErrorFileHandle        = errfile
+                mPrompt                 = KSPrompt()
+                mReadLine               = KSReadLine(input: infile, output: outfile, error: errfile)
+                mInputFileHandle.setReader(reader: {
                         (_ str: String) in self.receiveResponce(string: str)
                 })
         }
@@ -83,12 +87,12 @@ public class KSShell
 
         public func write(output ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
-                mFileInterface.write(string: str)
+                mOutputFileHandle.write(string: str)
         }
 
         public func write(error ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
-                mFileInterface.error(string: str)
+                mErrorFileHandle.write(string: str)
         }
 
         private func ecodeToString(escapeCodes ecodes: Array<MIEscapeCode>) -> String {

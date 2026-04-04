@@ -10,14 +10,18 @@ import Foundation
 
 public class KSReadLine
 {
-        private var mFileInterface:     MIFileInterface
+        private var mInputFileHandle:   FileHandle
+        private var mOutputFileHandle:  FileHandle
+        private var mErrorFileHandle:   FileHandle
         private var mCurrentPosition:   String.Index
         private var mCurrentLine:       String
 
         private var mCommands:                  Array<String>
 
-        public init(fileInterface fintf: MIFileInterface) {
-                mFileInterface          = fintf
+        public init(input infile: FileHandle, output outfile: FileHandle, error errfile: FileHandle) {
+                mInputFileHandle        = infile
+                mOutputFileHandle       = outfile
+                mErrorFileHandle        = errfile
                 mCurrentLine            = ""
                 mCurrentPosition        = mCurrentLine.startIndex
                 mCommands               = []
@@ -58,7 +62,7 @@ public class KSReadLine
                                         result.append(.moveCursorForward(len))
                                 }
                           @unknown default:
-                                mFileInterface.error(string: "[Error] Can not happen at \(#file)")
+                                mErrorFileHandle.write(string: "[Error] Can not happen at \(#file)")
                         }
                 case .newlineKey:
                         if !mCurrentLine.isEmpty {
@@ -81,7 +85,7 @@ public class KSReadLine
                 case .moveCursorForward(_), .moveCursorBackward(_):
                         result.append(ecode)
                 default:
-                        mFileInterface.error(string: "ShellKit: Ununkown code: \(ecode.description())")
+                        mErrorFileHandle.write(string: "ShellKit: Ununkown code: \(ecode.description())")
                 }
                 return result
         }
@@ -93,7 +97,7 @@ public class KSReadLine
         }
 
         private func showHistory(up doup: Bool) {
-                mFileInterface.error(string: "Show history: \(doup)")
+                mErrorFileHandle.write(string: "Show history: \(doup)")
         }
 
         private func moveCursorForward(offset off: Int) -> Int {
