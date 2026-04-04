@@ -10,26 +10,47 @@ import Foundation
 
 public class KSShell
 {
-        private var mInputFileHandle:   FileHandle
-        private var mOutputFileHandle:  FileHandle
-        private var mErrorFileHandle:   FileHandle
+        private var mStandardInput:     FileHandle
+        private var mStandardOutput:    FileHandle
+        private var mStandardError:     FileHandle
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
-        private var mReadLine:          KSReadLine
+        private var mReadline:          KSReadLine?
 
-        public init(input infile: FileHandle, output outfile: FileHandle, error errfile: FileHandle) {
+        public init() {
                 mDoExit                 = false
-                mInputFileHandle        = infile
-                mOutputFileHandle       = outfile
-                mErrorFileHandle        = errfile
+                mStandardInput          = FileHandle.standardInput
+                mStandardOutput         = FileHandle.standardOutput
+                mStandardError          = FileHandle.standardError
                 mPrompt                 = KSPrompt()
-                mReadLine               = KSReadLine(input: infile, output: outfile, error: errfile)
-                mInputFileHandle.setReader(reader: {
-                        (_ str: String) in self.receiveResponce(string: str)
-                })
+                mReadline               = nil
+        }
+
+        public var standardInput: FileHandle {
+                get      { return mStandardInput }
+                set(hdl) { mStandardInput = hdl }
+        }
+
+        public var standardOutput: FileHandle {
+                get      { return mStandardOutput }
+                set(hdl) { mStandardOutput = hdl }
+        }
+
+        public var standardError: FileHandle {
+                get      { return mStandardError }
+                set(hdl) { mStandardError = hdl }
         }
 
         public func main() {
+                // setup terminal
+                let readline = KSReadLine(input:  mStandardInput,
+                                          output: mStandardOutput,
+                                          error:  mStandardError)
+                mStandardInput.setReader(reader: {
+                        (_ str: String) in self.receiveResponce(readline: readline, string: str)
+                })
+                mReadline = readline
+
                 // print prompt
                 write(output: [escapeCodeToPrintPrompt()])
 
@@ -38,14 +59,14 @@ public class KSShell
                 }
         }
 
-        private func receiveResponce(string str: String) {
+        private func receiveResponce(readline rdline: KSReadLine, string str: String) {
                 switch MIEscapeCode.decode(string: str) {
                 case .success(let ecodes):
-                        let rcodes = mReadLine.decodeCodes(edcapeCodes: ecodes)
+                        let rcodes = rdline.decodeCodes(edcapeCodes: ecodes)
                         if rcodes.count > 0 {
                                 write(output: rcodes)
                         }
-                        let cmds = mReadLine.popCommands()
+                        let cmds = rdline.popCommands()
                         if cmds.count > 0 {
                                 for cmd in cmds {
                                         executeCommand(commandLine: cmd)
@@ -85,14 +106,14 @@ public class KSShell
                 ])
         }
 
-        public func write(output ecodes: Array<MIEscapeCode>){
+        private func write(output ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
-                mOutputFileHandle.write(string: str)
+                mStandardOutput.write(string: str)
         }
 
-        public func write(error ecodes: Array<MIEscapeCode>){
+        private func write(error ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
-                mErrorFileHandle.write(string: str)
+                mStandardError.write(string: str)
         }
 
         private func ecodeToString(escapeCodes ecodes: Array<MIEscapeCode>) -> String {
