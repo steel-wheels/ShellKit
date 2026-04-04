@@ -41,7 +41,7 @@ public class KSShell
                 set(hdl) { mStandardError = hdl }
         }
 
-        public func main() {
+        public func run() {
                 // setup terminal
                 let readline = KSReadLine(input:  mStandardInput,
                                           output: mStandardOutput,
@@ -53,7 +53,9 @@ public class KSShell
 
                 // print prompt
                 write(output: [escapeCodeToPrintPrompt()])
+        }
 
+        public func wait() {
                 while !mDoExit {
                         Thread.sleep(forTimeInterval: 0.1)
                 }
