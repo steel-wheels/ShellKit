@@ -64,6 +64,9 @@ public class KSReadLine
                           @unknown default:
                                 mErrorFileHandle.write(string: "[Error] Can not happen at \(#file)")
                         }
+                case .deleteKey:
+                        result.append(.moveCursorBackward(1))
+                        result.append(.eraceFromCursorWithLength(1))
                 case .newlineKey:
                         if !mCurrentLine.isEmpty {
                                 /* move cursor to end of line */
