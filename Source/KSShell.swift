@@ -77,30 +77,30 @@ public class KSShell
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
                         write(error: [
-                                .insertString("[Error] \(msg) at \(#file)"),
-                                .newlineKey
+                                .string("[Error] \(msg) at \(#file)"),
+                                .key(.newline)
                         ])
                 }
         }
 
         private func escapeCodeToPrintPrompt() -> MIEscapeCode {
-                return .insertString(mPrompt.string)
+                return .string(mPrompt.string)
         }
 
         private func executeCommand(commandLine str: String) {
                 switch KSCommandLineParser.parse(commandLine: str) {
                 case .success(let commands):
                         for cmd in commands {
-                                write(error: [
-                                        .insertString(cmd.description),
-                                        .newlineKey
+                                write(output: [
+                                        .string(cmd.description),
+                                        .key(.newline)
                                 ])
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
                         write(error: [
-                                .insertString(msg),
-                                .newlineKey
+                                .string(msg),
+                                .key(.newline)
                         ])
                 }
                 write(error: [

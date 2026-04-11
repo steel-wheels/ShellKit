@@ -40,53 +40,60 @@ public class KSReadLine
                 var result: Array<MIEscapeCode> = []
 
                 switch ecode {
-                case .insertString(let str):
+                case .string(let str):
                         let len = str.lengthOfBytes(using: .utf8)
                         mCurrentLine.insert(contentsOf: str, at: mCurrentPosition)
                         let _ = moveCursorForward(offset: len)
-                        result.append(.insertString(str))
-                case .arrowKey(let key):
-                        switch key {
-                          case .up:
-                                showHistory(up: true)
-                          case .down:
-                                showHistory(up: false)
-                          case .left:
-                                let len = moveCursorBackward(offset: 1)
-                                if len > 0 {
-                                        result.append(.moveCursorBackward(len))
+                        result.append(.string(str))
+                case .moveCursorForward(_), .moveCursorBackward(_):
+                        result.append(ecode)
+                case .key(let key):
+                        switch(key) {
+                        case .delete:
+                                result.append(.moveCursorBackward(1))
+                                result.append(.eraceFromCursorWithLength(1))
+                        case .arrow(let atype):
+                                switch atype {
+                                  case .up:
+                                        showHistory(up: true)
+                                  case .down:
+                                        showHistory(up: false)
+                                  case .left:
+                                        let len = moveCursorBackward(offset: 1)
+                                        if len > 0 {
+                                                result.append(.moveCursorBackward(len))
+                                        }
+                                  case .right:
+                                        let len = moveCursorForward(offset: 1)
+                                        if len > 0 {
+                                                result.append(.moveCursorForward(len))
+                                        }
+                                  @unknown default:
+                                        mErrorFileHandle.write(string: "[Error] Can not happen at \(#file)")
                                 }
-                          case .right:
-                                let len = moveCursorForward(offset: 1)
-                                if len > 0 {
-                                        result.append(.moveCursorForward(len))
-                                }
-                          @unknown default:
-                                mErrorFileHandle.write(string: "[Error] Can not happen at \(#file)")
-                        }
-                case .deleteKey:
-                        result.append(.moveCursorBackward(1))
-                        result.append(.eraceFromCursorWithLength(1))
-                case .newlineKey:
-                        if !mCurrentLine.isEmpty {
+                        case .carriageReturn, .lineFeed, .newline:
                                 /* move cursor to end of line */
                                 var off = 0
                                 while mCurrentPosition < mCurrentLine.endIndex {
                                         mCurrentPosition = mCurrentLine.index(after: mCurrentPosition)
                                         off += 1
                                 }
-                                result.append(.moveCursorForward(off))
-                                result.append(.newlineKey)
+                                if off > 0 {
+                                        result.append(.moveCursorForward(off))
+                                }
+                                result.append(.key(.newline))
 
-                                /* push the command to execute later */
-                                mCommands.append(mCurrentLine)
+                                if !mCurrentLine.isEmpty {
+                                        /* push the command to execute later */
+                                        mCommands.append(mCurrentLine)
 
-                                /* clear current command line */
-                                mCurrentLine     = ""
-                                mCurrentPosition = mCurrentLine.startIndex
+                                        /* clear current command line */
+                                        mCurrentLine     = ""
+                                        mCurrentPosition = mCurrentLine.startIndex
+                                }
+                        default:
+                                mErrorFileHandle.write(string: "ShellKit: Unsuppoted key: \(key.description)")
                         }
-                case .moveCursorForward(_), .moveCursorBackward(_):
-                        result.append(ecode)
                 default:
                         mErrorFileHandle.write(string: "ShellKit: Ununkown code: \(ecode.description())")
                 }
