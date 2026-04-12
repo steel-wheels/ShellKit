@@ -13,6 +13,7 @@ public class KSShell
         private var mStandardInput:     FileHandle
         private var mStandardOutput:    FileHandle
         private var mStandardError:     FileHandle
+        private var mEnvVariable:       MIEnvVariables
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
         private var mReadline:          KSReadLine?
@@ -22,6 +23,7 @@ public class KSShell
                 mStandardInput          = FileHandle.standardInput
                 mStandardOutput         = FileHandle.standardOutput
                 mStandardError          = FileHandle.standardError
+                mEnvVariable            = MIEnvVariables(parent: nil)
                 mPrompt                 = KSPrompt()
                 mReadline               = nil
         }
@@ -41,8 +43,15 @@ public class KSShell
                 set(hdl) { mStandardError = hdl }
         }
 
+        public var envVariables: MIEnvVariables { get {
+                return mEnvVariable
+        }}
+
         public func run() {
-                // setup terminal
+                /* load preference */
+                loadPreference()
+
+                /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,
                                           output: mStandardOutput,
                                           error:  mStandardError)
@@ -50,6 +59,9 @@ public class KSShell
                         (_ str: String) in self.receiveResponce(readline: readline, string: str)
                 })
                 mReadline = readline
+
+                /* setup terminal */
+                setupTerminal()
 
                 // print prompt
                 write(output: [escapeCodeToPrintPrompt()])
@@ -59,6 +71,25 @@ public class KSShell
                 while !mDoExit {
                         Thread.sleep(forTimeInterval: 0.1)
                 }
+        }
+
+        private func loadPreference() {
+                let foregroundColor: MITextColor = .green(true)
+                let backgroundColor: MITextColor = .black(false)
+
+                mEnvVariable.set(color: foregroundColor, forKey: .terminalForeground)
+                mEnvVariable.set(color: backgroundColor, forKey: .terminalBackground)
+        }
+
+        private func setupTerminal() {
+                var codes: Array<MIEscapeCode> = []
+                if let col = mEnvVariable.color(forKey: .terminalForeground) {
+                        codes.append(.setColor(col))
+                }
+                if let col = mEnvVariable.color(forKey: .terminalBackground) {
+                        codes.append(.setColor(col))
+                }
+                write(output: codes)
         }
 
         private func receiveResponce(readline rdline: KSReadLine, string str: String) {
