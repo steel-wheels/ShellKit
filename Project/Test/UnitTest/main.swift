@@ -7,5 +7,13 @@
 
 import Foundation
 
-print("Hello, World!")
+let res0 = testCommandLineEditor()
+
+let result = res0
+
+if(result){
+        print("Summary: OK")
+} else {
+        print("Summary: Error")
+}
 

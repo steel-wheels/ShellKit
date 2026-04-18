@@ -10,13 +10,17 @@ import Foundation
 
 public class KSReadLine
 {
+        public enum Command {
+                case execute(String)
+                case showHistory(Bool)                 // true: up, false: down
+                case escapeCode(MIEscapeCode)
+        }
+
         private var mInputFileHandle:   FileHandle
         private var mOutputFileHandle:  FileHandle
         private var mErrorFileHandle:   FileHandle
         private var mCurrentPosition:   String.Index
         private var mCurrentLine:       String
-
-        private var mCommands:                  Array<String>
 
         public init(input infile: FileHandle, output outfile: FileHandle, error errfile: FileHandle) {
                 mInputFileHandle        = infile
@@ -24,11 +28,10 @@ public class KSReadLine
                 mErrorFileHandle        = errfile
                 mCurrentLine            = ""
                 mCurrentPosition        = mCurrentLine.startIndex
-                mCommands               = []
         }
 
-        public func decodeCodes(edcapeCodes ecodes: Array<MIEscapeCode>) -> Array<MIEscapeCode> {
-                var result: Array<MIEscapeCode> = []
+        public func decodeCodes(edcapeCodes ecodes: Array<MIEscapeCode>) -> Array<Command> {
+                var result: Array<Command> = []
                 for ecode in ecodes {
                         let rcodes = decodeCode(edcapeCode: ecode)
                         result.append(contentsOf: rcodes)
@@ -36,37 +39,37 @@ public class KSReadLine
                 return result
         }
 
-        private func decodeCode(edcapeCode ecode: MIEscapeCode) -> Array<MIEscapeCode> {
-                var result: Array<MIEscapeCode> = []
+        private func decodeCode(edcapeCode ecode: MIEscapeCode) -> Array<Command> {
+                var result: Array<Command> = []
 
                 switch ecode {
                 case .string(let str):
                         let len = str.lengthOfBytes(using: .utf8)
                         mCurrentLine.insert(contentsOf: str, at: mCurrentPosition)
                         let _ = moveCursorForward(offset: len)
-                        result.append(.string(str))
+                        result.append(.escapeCode(.string(str)))
                 case .moveCursorForward(_), .moveCursorBackward(_):
-                        result.append(ecode)
+                        result.append(.escapeCode(ecode))
                 case .key(let key):
                         switch(key) {
                         case .delete:
-                                result.append(.moveCursorBackward(1))
-                                result.append(.eraceFromCursorWithLength(1))
+                                result.append(.escapeCode(.moveCursorBackward(1)))
+                                result.append(.escapeCode(.eraceFromCursorWithLength(1)))
                         case .arrow(let atype):
                                 switch atype {
                                   case .up:
-                                        showHistory(up: true)
+                                        result.append(.showHistory(true))
                                   case .down:
-                                        showHistory(up: false)
+                                        result.append(.showHistory(false))
                                   case .left:
                                         let len = moveCursorBackward(offset: 1)
                                         if len > 0 {
-                                                result.append(.moveCursorBackward(len))
+                                                result.append(.escapeCode(.moveCursorBackward(len)))
                                         }
                                   case .right:
                                         let len = moveCursorForward(offset: 1)
                                         if len > 0 {
-                                                result.append(.moveCursorForward(len))
+                                                result.append(.escapeCode(.moveCursorForward(len)))
                                         }
                                   @unknown default:
                                         mErrorFileHandle.write(string: "[Error] Can not happen at \(#file)")
@@ -79,13 +82,13 @@ public class KSReadLine
                                         off += 1
                                 }
                                 if off > 0 {
-                                        result.append(.moveCursorForward(off))
+                                        result.append(.escapeCode(.moveCursorForward(off)))
                                 }
-                                result.append(.key(.newline))
+                                result.append(.escapeCode(.string("\n")))
 
                                 if !mCurrentLine.isEmpty {
                                         /* push the command to execute later */
-                                        mCommands.append(mCurrentLine)
+                                        result.append(.execute(mCurrentLine))
 
                                         /* clear current command line */
                                         mCurrentLine     = ""
@@ -98,16 +101,6 @@ public class KSReadLine
                         mErrorFileHandle.write(string: "ShellKit: Ununkown code: \(ecode.description())")
                 }
                 return result
-        }
-
-        public func popCommands() -> Array<String> {
-                let cmds  = mCommands
-                mCommands = []
-                return cmds
-        }
-
-        private func showHistory(up doup: Bool) {
-                mErrorFileHandle.write(string: "Show history: \(doup)")
         }
 
         private func moveCursorForward(offset off: Int) -> Int {

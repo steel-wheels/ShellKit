@@ -64,7 +64,9 @@ public class KSShell
                 setupTerminal()
 
                 // print prompt
-                write(output: [escapeCodeToPrintPrompt()])
+                write(output: [
+                        .string(mPrompt.string)
+                ])
         }
 
         public func wait() {
@@ -95,49 +97,59 @@ public class KSShell
         private func receiveResponce(readline rdline: KSReadLine, string str: String) {
                 switch MIEscapeCode.decode(string: str) {
                 case .success(let ecodes):
-                        let rcodes = rdline.decodeCodes(edcapeCodes: ecodes)
-                        if rcodes.count > 0 {
-                                write(output: rcodes)
-                        }
-                        let cmds = rdline.popCommands()
-                        if cmds.count > 0 {
-                                for cmd in cmds {
-                                        executeCommand(commandLine: cmd)
-                                }
-                        }
+                        let commands = rdline.decodeCodes(edcapeCodes: ecodes)
+                        executeCommands(commands: commands)
+
+                        /* print next prompt */
+                        write(output: [
+                                .string("\n" + mPrompt.string)
+                        ])
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
                         write(error: [
-                                .string("[Error] \(msg) at \(#file)"),
-                                .key(.newline)
+                                .string("[Error] \(msg) at \(#file)\n")
                         ])
                 }
         }
 
-        private func escapeCodeToPrintPrompt() -> MIEscapeCode {
-                return .string(mPrompt.string)
+        private func executeCommands(commands cmds: Array<KSReadLine.Command>) {
+                for cmd in cmds {
+                        switch cmd {
+                        case .execute(let cmd):
+                                executeCommand(commandLine: cmd)
+                        case .showHistory(let flag):
+                                NSLog("KSShell: showHistory(\(flag))")
+                        case .escapeCode(let ecode):
+                                mStandardOutput.write(string: ecode.encode())
+                        }
+                }
         }
 
+        private func executeCommand(commandLine str: String) {
+                NSLog("KSShell: execute(\(str))")
+        }
+
+        /*
         private func executeCommand(commandLine str: String) {
                 switch KSCommandLineParser.parse(commandLine: str) {
                 case .success(let commands):
                         for cmd in commands {
                                 write(output: [
                                         .string(cmd.description),
-                                        .key(.newline)
+                                        .string("\n")
                                 ])
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
                         write(error: [
                                 .string(msg),
-                                .key(.newline)
+                                .string("\n")
                         ])
                 }
                 write(error: [
                         escapeCodeToPrintPrompt()
                 ])
-        }
+        }*/
 
         private func write(output ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)

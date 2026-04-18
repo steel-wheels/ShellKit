@@ -11,6 +11,10 @@
 		05082E5D2F792FB90016C704 /* KSCommandLineParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05082E5B2F792FB90016C704 /* KSCommandLineParser.swift */; };
 		05082E772F7965160016C704 /* KSCommandToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05082E762F7965160016C704 /* KSCommandToken.swift */; };
 		05082E782F7965160016C704 /* KSCommandToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05082E762F7965160016C704 /* KSCommandToken.swift */; };
+		050E28022F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */; };
+		050E28032F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */; };
+		050E28072F92727500EC5CCE /* MultiDataKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050E28062F92727400EC5CCE /* MultiDataKit.framework */; };
+		050E280F2F92740E00EC5CCE /* ShellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050E280E2F92740E00EC5CCE /* ShellKit.framework */; };
 		054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
@@ -24,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		059ECCF32F92E85900EB9CA0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 05E842F22F5CF6490021856B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 05DC6B202F66324100E134DA;
+			remoteInfo = Install;
+		};
 		05DC6B242F66325200E134DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 05E842F22F5CF6490021856B /* Project object */;
@@ -78,6 +89,10 @@
 		0507EFF82F79E8CF003CBDC0 /* UnitTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		05082E5B2F792FB90016C704 /* KSCommandLineParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandLineParser.swift; sourceTree = "<group>"; };
 		05082E762F7965160016C704 /* KSCommandToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandToken.swift; sourceTree = "<group>"; };
+		050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandLineEditor.swift; sourceTree = "<group>"; };
+		050E28062F92727400EC5CCE /* MultiDataKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultiDataKit.framework; path = "../../../Library/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64/MultiDataKit.framework"; sourceTree = "<group>"; };
+		050E280A2F9273E200EC5CCE /* ShellKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ShellKit.xcframework; path = ../../../Library/Frameworks/ShellKit.xcframework; sourceTree = "<group>"; };
+		050E280E2F92740E00EC5CCE /* ShellKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShellKit.framework; path = "../../../Library/Frameworks/ShellKit.xcframework/macos-arm64_x86_64/ShellKit.framework"; sourceTree = "<group>"; };
 		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
 		05672AA52F5DA9F1003F832E /* ShellKit.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShellKit.md; sourceTree = "<group>"; };
 		05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSPrompt.swift; sourceTree = "<group>"; };
@@ -110,6 +125,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				050E280F2F92740E00EC5CCE /* ShellKit.framework in Frameworks */,
+				050E28072F92727500EC5CCE /* MultiDataKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +162,7 @@
 			children = (
 				054603D92F5D9AC3005CFCF9 /* KSShell.swift */,
 				05082E5B2F792FB90016C704 /* KSCommandLineParser.swift */,
+				050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */,
 				05082E762F7965160016C704 /* KSCommandToken.swift */,
 				05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */,
 				05DC6B4F2F66373A00E134DA /* KSReadLine.swift */,
@@ -165,6 +183,9 @@
 		05DC6B182F66319D00E134DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				050E280E2F92740E00EC5CCE /* ShellKit.framework */,
+				050E280A2F9273E200EC5CCE /* ShellKit.xcframework */,
+				050E28062F92727400EC5CCE /* MultiDataKit.framework */,
 				05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */,
 			);
 			name = Frameworks;
@@ -245,6 +266,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				059ECCF42F92E85900EB9CA0 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0507EFF92F79E8CF003CBDC0 /* UnitTest */,
@@ -381,6 +403,7 @@
 			files = (
 				05082E5D2F792FB90016C704 /* KSCommandLineParser.swift in Sources */,
 				054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */,
+				050E28032F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */,
 				05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				05DC6B512F66373A00E134DA /* KSReadLine.swift in Sources */,
 				05082E772F7965160016C704 /* KSCommandToken.swift in Sources */,
@@ -393,6 +416,7 @@
 			files = (
 				05082E5C2F792FB90016C704 /* KSCommandLineParser.swift in Sources */,
 				054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */,
+				050E28022F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */,
 				05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				05DC6B502F66373A00E134DA /* KSReadLine.swift in Sources */,
 				05082E782F7965160016C704 /* KSCommandToken.swift in Sources */,
@@ -402,6 +426,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		059ECCF42F92E85900EB9CA0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 05DC6B202F66324100E134DA /* Install */;
+			targetProxy = 059ECCF32F92E85900EB9CA0 /* PBXContainerItemProxy */;
+		};
 		05DC6B252F66325200E134DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 05E8430B2F5CFBA50021856B /* ShellKit_iOS */;
@@ -421,6 +450,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64",
+					"$(USER_LIBRARY_DIR)/Frameworks/ShellKit.xcframework/macos-arm64_x86_64",
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(HOME)/Library/Frameworks/ShellKit.xcframework/macos-arm64_x86_64/ShellKit.framework",
+					"$(USER_LIBRARY_DIR)/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -435,6 +473,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64",
+					"$(USER_LIBRARY_DIR)/Frameworks/ShellKit.xcframework/macos-arm64_x86_64",
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(HOME)/Library/Frameworks/ShellKit.xcframework/macos-arm64_x86_64/ShellKit.framework",
+					"$(USER_LIBRARY_DIR)/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
