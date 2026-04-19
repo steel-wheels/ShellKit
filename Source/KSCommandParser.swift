@@ -1,5 +1,5 @@
 /*
- * @file KSShellParser.swift
+ * @file KSCommandParser.swift
  * @description Define KSShellParser class
  * @par Copyright
  *   Copyright (C) 2026 Steel Wheels Project
@@ -8,23 +8,9 @@
 import MultiDataKit
 import Foundation
 
-public class KSCommandLineParser
+public class KSCommandParser
 {
-        public struct Command {
-                public var commandPath:         String
-                public var arguments:           Array<String>
-
-                public init(commandPath path: String, arguments args: Array<String>) {
-                        commandPath     = path
-                        arguments       = args
-                }
-
-                public var description: String { get {
-                        return "command(\(commandPath), [\(arguments)])"
-                }}
-        }
-
-        public static func parse(commandLine cmdline: String) -> Result<Array<Command>, NSError> {
+        public static func parse(commandLine cmdline: String) -> Result<Array<KSCommand>, NSError> {
                 var commands: Array<Array<String>> = []
                 var command:  Array<String> = []
 
@@ -50,9 +36,9 @@ public class KSCommandLineParser
                 }
 
                 /* parse commands */
-                var result: Array<Command> = []
+                var result: Array<KSCommand> = []
                 for command in commands {
-                        switch KSCommandLineParser.parse(commands: command) {
+                        switch KSCommandParser.parse(commands: command) {
                         case .success(let cmd):
                                 result.append(cmd)
                         case .failure(let err):
@@ -62,7 +48,7 @@ public class KSCommandLineParser
                 return .success(result)
         }
 
-        private static func parse(commands cmds: Array<String>) -> Result<Command, NSError> {
+        private static func parse(commands cmds: Array<String>) -> Result<KSCommand, NSError> {
                 guard cmds.count > 0 else {
                         let error = MIError.parseError(message: "No string for command", line: 0)
                         return .failure(error)
@@ -72,7 +58,7 @@ public class KSCommandLineParser
                 for i in 1..<cmds.count {
                         args.append(cmds[i])
                 }
-                return .success(Command(commandPath: path, arguments: args))
+                return .success(KSCommand(commandPath: path, arguments: args))
         }
 }
 

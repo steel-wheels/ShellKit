@@ -112,6 +112,12 @@ public class KSShell
                         switch cmd {
                         case .execute(let cmd):
                                 executeCommand(commandLine: cmd)
+
+                                /* print newline and prompt */
+                                let newline: MIEscapeCode = .key(.newline)
+                                mStandardOutput.write(string: newline.encode())
+                                let prompt: MIEscapeCode = .string(mPrompt.string)
+                                mStandardOutput.write(string: prompt.encode())
                         case .showHistory(let flag):
                                 NSLog("KSShell: showHistory(\(flag))")
                         case .escapeCode(let ecode):
@@ -121,18 +127,7 @@ public class KSShell
         }
 
         private func executeCommand(commandLine str: String) {
-                NSLog("KSShell: execute(\(str))")
-
-                /* print newline and prompt */
-                let newline: MIEscapeCode = .key(.newline)
-                mStandardOutput.write(string: newline.encode())
-                let prompt: MIEscapeCode = .string(mPrompt.string)
-                mStandardOutput.write(string: prompt.encode())
-        }
-
-        /*
-        private func executeCommand(commandLine str: String) {
-                switch KSCommandLineParser.parse(commandLine: str) {
+                switch KSCommandParser.parse(commandLine: str) {
                 case .success(let commands):
                         for cmd in commands {
                                 write(output: [
@@ -147,10 +142,7 @@ public class KSShell
                                 .string("\n")
                         ])
                 }
-                write(error: [
-                        escapeCodeToPrintPrompt()
-                ])
-        }*/
+        }
 
         private func write(output ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
