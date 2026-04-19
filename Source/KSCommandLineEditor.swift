@@ -148,12 +148,8 @@ public class KSCommandLineEditor
                         case .backspace, .delete:
                                 let rcodes = execDeleteBackward(offset: 1)
                                 result.append(contentsOf: rcodes)
-                        case .carriageReturn, .lineFeed, .enter, .newline, .function(_),
-                                        .formFeed, .help, .home, .insert, .menu,
-                                        .pageUp, .pageDown, .tab, .command(_), .control(_):
+                        default:
                                 result.append(ecode)
-                        @unknown default:
-                                NSLog("[Error] Unknown key at \(#file)")
                         }
                 case .moveCursorForward(let off):
                         if let rcode = execMoveCursorForward(offset: off) {
@@ -191,31 +187,8 @@ public class KSCommandLineEditor
                         result.append(.eraceFromCursorWithLength(len))
                         mString = ""
                         mIndex  = mString.startIndex
-                case .moveCursorTo(_, _),
-                     .moveCursorUp(_),
-                     .moveCursor1LineUp,
-                     .moveCursorDown(_),
-                     .moveCursorToBeginingOfNextLine(_),
-                     .moveCursorToBeginingOfPrevLine(_),
-                     .moveCursorToColumn(_),
-                     .eraceFromCursorUntilEndOfScreen,
-                     .eraceFromToBeginningOfScreen,
-                     .eraceEntireScreen,
-                     .eraceSavedLines,
-                     .requestCursorPosition,
-                     .setCharacterAttribute(_),
-                     .resetAllCharacterAttributes,
-                     .setColor(_),
-                     .saveCursorPosition(_),
-                     .restoreCursorPosition(_),
-                     .makeCursorVisible(_),
-                     .blinkCursor(_),
-                     .saveScreen,
-                     .restoreScreen,
-                     .enableAlternativeBuffer(_):
-                        break
-                @unknown default:
-                        NSLog("[Error] Unknown ecode at \(#file)")
+                default:
+                        result.append(ecode)
                 }
                 return result
         }

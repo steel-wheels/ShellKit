@@ -99,11 +99,6 @@ public class KSShell
                 case .success(let ecodes):
                         let commands = rdline.decodeCodes(edcapeCodes: ecodes)
                         executeCommands(commands: commands)
-
-                        /* print next prompt */
-                        write(output: [
-                                .string("\n" + mPrompt.string)
-                        ])
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
                         write(error: [
@@ -127,6 +122,12 @@ public class KSShell
 
         private func executeCommand(commandLine str: String) {
                 NSLog("KSShell: execute(\(str))")
+
+                /* print newline and prompt */
+                let newline: MIEscapeCode = .key(.newline)
+                mStandardOutput.write(string: newline.encode())
+                let prompt: MIEscapeCode = .string(mPrompt.string)
+                mStandardOutput.write(string: prompt.encode())
         }
 
         /*
