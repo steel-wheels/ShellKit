@@ -10,7 +10,7 @@ import Foundation
 
 public class KSCommandParser
 {
-        public static func parse(commandLine cmdline: String) -> Result<Array<KSCommand>, NSError> {
+        public static func parse(commandLine cmdline: String) -> Result<Array<KSCommandLine>, NSError> {
                 var commands: Array<Array<String>> = []
                 var command:  Array<String> = []
 
@@ -36,7 +36,7 @@ public class KSCommandParser
                 }
 
                 /* parse commands */
-                var result: Array<KSCommand> = []
+                var result: Array<KSCommandLine> = []
                 for command in commands {
                         switch KSCommandParser.parse(commands: command) {
                         case .success(let cmd):
@@ -48,7 +48,7 @@ public class KSCommandParser
                 return .success(result)
         }
 
-        private static func parse(commands cmds: Array<String>) -> Result<KSCommand, NSError> {
+        private static func parse(commands cmds: Array<String>) -> Result<KSCommandLine, NSError> {
                 guard cmds.count > 0 else {
                         let error = MIError.parseError(message: "No string for command", line: 0)
                         return .failure(error)
@@ -58,7 +58,8 @@ public class KSCommandParser
                 for i in 1..<cmds.count {
                         args.append(cmds[i])
                 }
-                return .success(KSCommand(commandPath: path, arguments: args))
+                let cmd = KSExecCommand(commandPath: path, arguments: args)
+                return .success(.exec(cmd))
         }
 }
 

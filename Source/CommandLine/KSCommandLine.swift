@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct KSCommand {
+public struct KSExecCommand {
         public var commandPath:         String
         public var arguments:           Array<String>
 
@@ -18,6 +18,20 @@ public struct KSCommand {
 
         public var description: String { get {
                 return "command(\(commandPath), [\(arguments)])"
+        }}
+}
+
+public enum KSCommandLine
+{
+        case exec(KSExecCommand)
+
+        public var description: String { get {
+                let result: String
+                switch self {
+                case .exec(let ecmd):
+                        result = ecmd.description
+                }
+                return result
         }}
 }
 
