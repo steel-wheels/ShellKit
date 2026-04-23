@@ -1,0 +1,48 @@
+/*
+ * @file KSTranspiler.swift
+ * @description Define KSTranspiler class
+ * @par Copyright
+ *   Copyright (C) 2026 Steel Wheels Project
+ */
+
+import Foundation
+
+public class KSTranspiler
+{
+        private var mProcessId:         Int
+
+        public init() {
+                mProcessId = 0
+        }
+
+        public func transpile(commandLine cmdlines: Array<KSCommandLine>) -> Result<KSStatementSequence, NSError> {
+                let result = KSStatementSequence()
+                for cmdline in cmdlines {
+                        switch cmdline {
+                        case .exec(let execcmd):
+                                switch transpile(execCommand: execcmd) {
+                                case .success(let stmts):
+                                        result.append(contentsOf: stmts)
+                                case .failure(let err):
+                                        return .failure(err)
+                                }
+                        }
+                }
+                return .success(result)
+        }
+
+        private func transpile(execCommand execcmd: KSExecCommand) -> Result<Array<KSStatement>, NSError> {
+                var result: Array<KSStatement> = []
+                let pid       = uniqProcessId()
+                result.append(KSAllocateProcessStatement(processId: pid, commandPath: execcmd.commandPath, arguments: execcmd.arguments))
+                result.append(KSRunProcessStatement(processId: pid))
+                result.append(KSWaitProcessStatement(processId: pid))
+                return .success(result)
+        }
+
+        private func uniqProcessId() -> Int {
+                let pid = mProcessId
+                mProcessId += 1
+                return pid
+        }
+}

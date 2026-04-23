@@ -128,19 +128,18 @@ public class KSShell
 
         private func executeCommand(commandLine str: String) {
                 switch KSCommandParser.parse(commandLine: str) {
-                case .success(let commands):
-                        for cmd in commands {
-                                write(output: [
-                                        .string(cmd.description),
-                                        .string("\n")
-                                ])
+                case .success(let cmdlines):
+                        let transpiler = KSTranspiler()
+                        switch transpiler.transpile(commandLine: cmdlines) {
+                        case .success(let stmt):
+                                write(output: [.string(stmt.encode().toString())])
+                        case .failure(let err):
+                                let str = MIError.errorToString(error: err)
+                                write(error: [.string(str + "\n")])
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
-                        write(error: [
-                                .string(msg),
-                                .string("\n")
-                        ])
+                        write(error: [ .string(msg + "\n")])
                 }
         }
 
