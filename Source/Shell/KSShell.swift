@@ -111,10 +111,12 @@ public class KSShell
                 for cmd in cmds {
                         switch cmd {
                         case .execute(let cmd):
-                                executeCommand(commandLine: cmd)
+                                if !cmd.isEmpty {
+                                        executeCommand(commandLine: cmd)
+                                }
 
                                 /* print newline and prompt */
-                                let newline: MIEscapeCode = .key(.newline)
+                                let newline: MIEscapeCode = .key(.lineFeed)
                                 mStandardOutput.write(string: newline.encode())
                                 let prompt: MIEscapeCode = .string(mPrompt.string)
                                 mStandardOutput.write(string: prompt.encode())
@@ -132,7 +134,13 @@ public class KSShell
                         let transpiler = KSTranspiler()
                         switch transpiler.transpile(commandLine: cmdlines) {
                         case .success(let stmt):
-                                write(output: [.string(stmt.encode().toString())])
+                                var ecodes: Array<MIEscapeCode> = []
+                                let strs = stmt.encode()
+                                for str in strs {
+                                        ecodes.append(.string(str))
+                                        ecodes.append(.key(.lineFeed))
+                                }
+                                mStandardOutput.write(string: ecodeToString(escapeCodes: ecodes))
                         case .failure(let err):
                                 let str = MIError.errorToString(error: err)
                                 write(error: [.string(str + "\n")])

@@ -5,7 +5,6 @@
  *   Copyright (C) 2026 Steel Wheels Project
  */
 
-import MultiDataKit
 import Foundation
 
 open class KSStatement
@@ -30,9 +29,9 @@ open class KSStatement
                 return result
         }
 
-        open func encode() -> MIText {
+        open func encode() -> Array<String> {
                 NSLog("[Error] Must be override")
-                return MILine()
+                return []
         }
 }
 
@@ -48,12 +47,12 @@ public class KSStatementSequence: KSStatement
                 mStatements.append(contentsOf: stmts)
         }
 
-        public override func encode() -> MIText {
-                let para = MIParagraph()
+        public override func encode() -> Array<String> {
+                var result: Array<String> = []
                 for stmt in mStatements {
-                        para.add(text: stmt.encode())
+                        result.append(contentsOf: stmt.encode())
                 }
-                return para
+                return result
         }
 }
 
@@ -69,7 +68,7 @@ public class KSAllocateProcessStatement: KSStatement
                 mArguments      = args
         }
 
-        public override func encode() -> MIText {
+        public override func encode() -> Array<String> {
                 var line = "let "
                 line += processIdVariableName(processId: mProcessId)
                 line += " = newProcess("
@@ -77,7 +76,7 @@ public class KSAllocateProcessStatement: KSStatement
                 line += ", "
                 line += stringArrayValue(strings: mArguments)
                 line += ") ;"
-                return MILine(line: line)
+                return [line]
         }
 }
 
@@ -89,10 +88,10 @@ public class KSRunProcessStatement: KSStatement
                 mProcessId      = pid
         }
 
-        public override func encode() -> MIText {
+        public override func encode() -> Array<String> {
                 var line = processIdVariableName(processId: mProcessId)
                 line += ".run() ;"
-                return MILine(line: line)
+                return [line]
         }
 }
 
@@ -104,10 +103,10 @@ public class KSWaitProcessStatement: KSStatement
                 mProcessId      = pid
         }
 
-        public override func encode() -> MIText {
+        public override func encode() -> Array<String> {
                 var line = processIdVariableName(processId: mProcessId)
                 line += ".wait() ;"
-                return MILine(line: line)
+                return [line]
         }
 }
 

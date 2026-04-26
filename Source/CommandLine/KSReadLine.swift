@@ -52,7 +52,7 @@ public class KSReadLine
                                         default:
                                                 result.append(.escapeCode(ecode))
                                         }
-                                case .carriageReturn, .lineFeed, .newline:
+                                case .carriageReturn, .lineFeed, .enter:
                                         let cmd = mLineEditor.string
                                         mLineEditor.clear()
                                         result.append(.escapeCode(ecode))
