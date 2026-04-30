@@ -23,6 +23,12 @@
 		0557D6F82F951D4D0058C7E6 /* KSCommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0557D6F62F951D4D0058C7E6 /* KSCommandLine.swift */; };
 		0557D6FC2F9520610058C7E6 /* KSCommandParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0557D6FB2F9520610058C7E6 /* KSCommandParser.swift */; };
 		0557D6FD2F9520610058C7E6 /* KSCommandParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0557D6FB2F9520610058C7E6 /* KSCommandParser.swift */; };
+		0590713C2FA165E40033FA4D /* JavaScriptKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; };
+		0590713D2FA165E40033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0590713E2FA1662E0033FA4D /* JavaScriptKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; };
+		0590713F2FA1662E0033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		059071422FA1687D0033FA4D /* KSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059071412FA1687D0033FA4D /* KSEngine.swift */; };
+		059071432FA1687D0033FA4D /* KSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059071412FA1687D0033FA4D /* KSEngine.swift */; };
 		05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
 		05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
 		05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
@@ -74,6 +80,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				05DC6B1B2F66319D00E134DA /* MultiDataKit.xcframework in Embed Frameworks */,
+				0590713D2FA165E40033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +92,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				05DC6B1E2F6631D000E134DA /* MultiDataKit.xcframework in Embed Frameworks */,
+				0590713F2FA1662E0033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,6 +112,8 @@
 		0557D6F62F951D4D0058C7E6 /* KSCommandLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandLine.swift; sourceTree = "<group>"; };
 		0557D6FB2F9520610058C7E6 /* KSCommandParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandParser.swift; sourceTree = "<group>"; };
 		05672AA52F5DA9F1003F832E /* ShellKit.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShellKit.md; sourceTree = "<group>"; };
+		0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = JavaScriptKit.xcframework; path = ../../../Library/Frameworks/JavaScriptKit.xcframework; sourceTree = "<group>"; };
+		059071412FA1687D0033FA4D /* KSEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSEngine.swift; sourceTree = "<group>"; };
 		05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSPrompt.swift; sourceTree = "<group>"; };
 		05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
 		05DC6B4F2F66373A00E134DA /* KSReadLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSReadLine.swift; sourceTree = "<group>"; };
@@ -144,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */,
+				0590713C2FA165E40033FA4D /* JavaScriptKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */,
+				0590713E2FA1662E0033FA4D /* JavaScriptKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +184,7 @@
 				0557D6F92F951FB90058C7E6 /* Shell */,
 				0557D6FA2F951FCE0058C7E6 /* CommandLine */,
 				0557D6FE2F952A3F0058C7E6 /* Script */,
+				059071402FA168450033FA4D /* Engine */,
 			);
 			name = Source;
 			path = ../Source;
@@ -180,8 +193,8 @@
 		0557D6F92F951FB90058C7E6 /* Shell */ = {
 			isa = PBXGroup;
 			children = (
-				05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */,
 				054603D92F5D9AC3005CFCF9 /* KSShell.swift */,
+				05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */,
 			);
 			path = Shell;
 			sourceTree = "<group>";
@@ -216,9 +229,18 @@
 			path = ../Documents;
 			sourceTree = "<group>";
 		};
+		059071402FA168450033FA4D /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				059071412FA1687D0033FA4D /* KSEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
 		05DC6B182F66319D00E134DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */,
 				050E280E2F92740E00EC5CCE /* ShellKit.framework */,
 				050E280A2F9273E200EC5CCE /* ShellKit.xcframework */,
 				050E28062F92727400EC5CCE /* MultiDataKit.framework */,
@@ -441,6 +463,7 @@
 				054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */,
 				0557D6FC2F9520610058C7E6 /* KSCommandParser.swift in Sources */,
 				050E28032F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */,
+				059071422FA1687D0033FA4D /* KSEngine.swift in Sources */,
 				0546347A2F999014008D8549 /* KSTranspiler.swift in Sources */,
 				05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				054634782F9919B0008D8549 /* KSStatement.swift in Sources */,
@@ -457,6 +480,7 @@
 				054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */,
 				0557D6FD2F9520610058C7E6 /* KSCommandParser.swift in Sources */,
 				050E28022F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */,
+				059071432FA1687D0033FA4D /* KSEngine.swift in Sources */,
 				0546347B2F999014008D8549 /* KSTranspiler.swift in Sources */,
 				05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				054634772F9919B0008D8549 /* KSStatement.swift in Sources */,

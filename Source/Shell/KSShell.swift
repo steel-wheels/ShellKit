@@ -17,6 +17,7 @@ public class KSShell
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
         private var mReadline:          KSReadLine?
+        private var mEngine:            KSEngine
 
         public init() {
                 mDoExit                 = false
@@ -25,6 +26,7 @@ public class KSShell
                 mStandardError          = FileHandle.standardError
                 mEnvVariable            = MIEnvVariables(parent: nil)
                 mPrompt                 = KSPrompt()
+                mEngine                 = KSEngine(environment: mEnvVariable)
                 mReadline               = nil
         }
 
@@ -134,13 +136,7 @@ public class KSShell
                         let transpiler = KSTranspiler()
                         switch transpiler.transpile(commandLine: cmdlines) {
                         case .success(let stmt):
-                                var ecodes: Array<MIEscapeCode> = []
-                                let strs = stmt.encode()
-                                for str in strs {
-                                        ecodes.append(.string(str))
-                                        ecodes.append(.key(.lineFeed))
-                                }
-                                mStandardOutput.write(string: ecodeToString(escapeCodes: ecodes))
+                                executeCommand(statement: stmt)
                         case .failure(let err):
                                 let str = MIError.errorToString(error: err)
                                 write(error: [.string(str + "\n")])
@@ -151,9 +147,26 @@ public class KSShell
                 }
         }
 
+        private func executeCommand(statement stmt: KSStatementSequence) {
+                let prochdl = MIProcessFileHandle(input: mStandardInput, output: mStandardOutput, error: mStandardError)
+                switch mEngine.loadContext(processFileHandle: prochdl) {
+                case .success(let ctxt):
+                        if let err = mEngine.execute(statement: stmt, in: ctxt) {
+                                write(errorInfo: err)
+                        }
+                case .failure(let err):
+                        write(errorInfo: err)
+                }
+        }
+
         private func write(output ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
                 mStandardOutput.write(string: str)
+        }
+
+        private func write(errorInfo einfo: NSError) {
+                let emsg = "[Error]] " + MIError.errorToString(error: einfo) + "\n"
+                mStandardError.write(string: emsg)
         }
 
         private func write(error ecodes: Array<MIEscapeCode>){
