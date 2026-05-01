@@ -24,17 +24,13 @@
 		0557D6FC2F9520610058C7E6 /* KSCommandParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0557D6FB2F9520610058C7E6 /* KSCommandParser.swift */; };
 		0557D6FD2F9520610058C7E6 /* KSCommandParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0557D6FB2F9520610058C7E6 /* KSCommandParser.swift */; };
 		0590713C2FA165E40033FA4D /* JavaScriptKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; };
-		0590713D2FA165E40033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0590713E2FA1662E0033FA4D /* JavaScriptKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; };
-		0590713F2FA1662E0033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		059071422FA1687D0033FA4D /* KSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059071412FA1687D0033FA4D /* KSEngine.swift */; };
 		059071432FA1687D0033FA4D /* KSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059071412FA1687D0033FA4D /* KSEngine.swift */; };
 		05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
 		05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
 		05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
-		05DC6B1B2F66319D00E134DA /* MultiDataKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
-		05DC6B1E2F6631D000E134DA /* MultiDataKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		05DC6B502F66373A00E134DA /* KSReadLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DC6B4F2F66373A00E134DA /* KSReadLine.swift */; };
 		05DC6B512F66373A00E134DA /* KSReadLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DC6B4F2F66373A00E134DA /* KSReadLine.swift */; };
 /* End PBXBuildFile section */
@@ -72,30 +68,6 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
-		};
-		05DC6B1C2F66319D00E134DA /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				05DC6B1B2F66319D00E134DA /* MultiDataKit.xcframework in Embed Frameworks */,
-				0590713D2FA165E40033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		05DC6B1F2F6631D000E134DA /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				05DC6B1E2F6631D000E134DA /* MultiDataKit.xcframework in Embed Frameworks */,
-				0590713F2FA1662E0033FA4D /* JavaScriptKit.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -344,7 +316,6 @@
 				05E842F72F5CF6490021856B /* Sources */,
 				05E842F82F5CF6490021856B /* Frameworks */,
 				05E842F92F5CF6490021856B /* Resources */,
-				05DC6B1C2F66319D00E134DA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -368,7 +339,6 @@
 				05E843082F5CFBA50021856B /* Sources */,
 				05E843092F5CFBA50021856B /* Frameworks */,
 				05E8430A2F5CFBA50021856B /* Resources */,
-				05DC6B1F2F6631D000E134DA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
