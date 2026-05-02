@@ -29,6 +29,8 @@
 		059071432FA1687D0033FA4D /* KSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059071412FA1687D0033FA4D /* KSEngine.swift */; };
 		05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
 		05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */; };
+		05BD5DC52FA619100056E284 /* KSPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BD5DC42FA619100056E284 /* KSPreference.swift */; };
+		05BD5DC62FA619100056E284 /* KSPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BD5DC42FA619100056E284 /* KSPreference.swift */; };
 		05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
 		05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
 		05DC6B502F66373A00E134DA /* KSReadLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DC6B4F2F66373A00E134DA /* KSReadLine.swift */; };
@@ -87,6 +89,7 @@
 		0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = JavaScriptKit.xcframework; path = ../../../Library/Frameworks/JavaScriptKit.xcframework; sourceTree = "<group>"; };
 		059071412FA1687D0033FA4D /* KSEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSEngine.swift; sourceTree = "<group>"; };
 		05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSPrompt.swift; sourceTree = "<group>"; };
+		05BD5DC42FA619100056E284 /* KSPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSPreference.swift; sourceTree = "<group>"; };
 		05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
 		05DC6B4F2F66373A00E134DA /* KSReadLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSReadLine.swift; sourceTree = "<group>"; };
 		05E842FB2F5CF6490021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,6 +170,7 @@
 			children = (
 				054603D92F5D9AC3005CFCF9 /* KSShell.swift */,
 				05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */,
+				05BD5DC42FA619100056E284 /* KSPreference.swift */,
 			);
 			path = Shell;
 			sourceTree = "<group>";
@@ -438,6 +442,7 @@
 				05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				054634782F9919B0008D8549 /* KSStatement.swift in Sources */,
 				05DC6B512F66373A00E134DA /* KSReadLine.swift in Sources */,
+				05BD5DC62FA619100056E284 /* KSPreference.swift in Sources */,
 				0557D6F82F951D4D0058C7E6 /* KSCommandLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +460,7 @@
 				05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				054634772F9919B0008D8549 /* KSStatement.swift in Sources */,
 				05DC6B502F66373A00E134DA /* KSReadLine.swift in Sources */,
+				05BD5DC52FA619100056E284 /* KSPreference.swift in Sources */,
 				0557D6F72F951D4D0058C7E6 /* KSCommandLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

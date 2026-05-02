@@ -12,7 +12,8 @@ public class KSReadLine
 {
         public enum Command {
                 case execute(String)
-                case showHistory(Bool)                 // true: up, false: down
+                case showHistory(Bool)                  // true: up, false: down
+                case updateCursorPosition(Int, Int)     // row, col
                 case escapeCode(MIEscapeCode)
         }
 
@@ -60,6 +61,8 @@ public class KSReadLine
                                 default:
                                         result.append(.escapeCode(ecode))
                                 }
+                        case .returnCursorPosition(let row, let col):
+                                result.append(.updateCursorPosition(row, col))
                         default:
                                 result.append(.escapeCode(ecode))
                         }

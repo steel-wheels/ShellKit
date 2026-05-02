@@ -13,6 +13,7 @@ public class KSShell
         private var mStandardInput:     FileHandle
         private var mStandardOutput:    FileHandle
         private var mStandardError:     FileHandle
+        private var mPreference:        KSPreference
         private var mEnvVariable:       MIEnvVariables
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
@@ -24,6 +25,7 @@ public class KSShell
                 mStandardInput          = FileHandle.standardInput
                 mStandardOutput         = FileHandle.standardOutput
                 mStandardError          = FileHandle.standardError
+                mPreference             = KSPreference()
                 mEnvVariable            = MIEnvVariables(parent: nil)
                 mPrompt                 = KSPrompt()
                 mEngine                 = KSEngine(environment: mEnvVariable)
@@ -45,13 +47,13 @@ public class KSShell
                 set(hdl) { mStandardError = hdl }
         }
 
-        public var envVariables: MIEnvVariables { get {
-                return mEnvVariable
+        public var preference: KSPreference { get {
+                return mPreference
         }}
 
         public func run() {
                 /* load preference */
-                loadPreference()
+                mPreference.load()
 
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,
@@ -77,22 +79,11 @@ public class KSShell
                 }
         }
 
-        private func loadPreference() {
-                let foregroundColor: MITextColor = .green(true)
-                let backgroundColor: MITextColor = .black(false)
-
-                mEnvVariable.set(color: foregroundColor, forKey: .terminalForeground)
-                mEnvVariable.set(color: backgroundColor, forKey: .terminalBackground)
-        }
-
         private func setupTerminal() {
-                var codes: Array<MIEscapeCode> = []
-                if let col = mEnvVariable.color(forKey: .terminalForeground) {
-                        codes.append(.setColor(col))
-                }
-                if let col = mEnvVariable.color(forKey: .terminalBackground) {
-                        codes.append(.setColor(col))
-                }
+                let codes: Array<MIEscapeCode> = [
+                        .setColor(mPreference.foregroundColor),
+                        .setColor(mPreference.backgroundColor)
+                ]
                 write(output: codes)
         }
 
@@ -124,7 +115,12 @@ public class KSShell
                                 mStandardOutput.write(string: prompt.encode())
                         case .showHistory(let flag):
                                 NSLog("KSShell: showHistory(\(flag))")
+                        case .updateCursorPosition(let row, let col):
+                                NSLog("\(#file) Update cursor position row=\(row) col=\(col)")
+                                mEnvVariable.set(number: NSNumber(value: row), forKey: MIEnvVariables.terminalRowNumber)
+                                mEnvVariable.set(number: NSNumber(value: col), forKey: MIEnvVariables.terminalColumnNumber)
                         case .escapeCode(let ecode):
+                                /* output to terminal */
                                 mStandardOutput.write(string: ecode.encode())
                         }
                 }
