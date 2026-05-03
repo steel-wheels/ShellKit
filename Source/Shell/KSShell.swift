@@ -55,6 +55,12 @@ public class KSShell
                 /* load preference */
                 mPreference.load()
 
+                /* initializ environment variables */
+                let paths: Array<String> = [
+                        "/bin", "/usr/bin"
+                ]
+                mEnvVariable.set(strings: paths, forKey: MIEnvVariables.paths)
+
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,
                                           output: mStandardOutput,
@@ -129,7 +135,7 @@ public class KSShell
         private func executeCommand(commandLine str: String) {
                 switch KSCommandParser.parse(commandLine: str) {
                 case .success(let cmdlines):
-                        let transpiler = KSTranspiler()
+                        let transpiler = KSTranspiler(envVariable: mEnvVariable)
                         switch transpiler.transpile(commandLine: cmdlines) {
                         case .success(let stmt):
                                 executeCommand(statement: stmt)
