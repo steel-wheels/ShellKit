@@ -47,6 +47,10 @@ public class KSShell
                 set(hdl) { mStandardError = hdl }
         }
 
+        public var environment: MIEnvVariables { get {
+                return mEnvVariable
+        }}
+
         public var preference: KSPreference { get {
                 return mPreference
         }}
