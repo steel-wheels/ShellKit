@@ -13,6 +13,8 @@
 		050E28032F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */; };
 		050E28072F92727500EC5CCE /* MultiDataKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050E28062F92727400EC5CCE /* MultiDataKit.framework */; };
 		050E280F2F92740E00EC5CCE /* ShellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050E280E2F92740E00EC5CCE /* ShellKit.framework */; };
+		052A38812FA83F0F0078AD7B /* KSBuiltinCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052A38802FA83F0F0078AD7B /* KSBuiltinCommand.swift */; };
+		052A38822FA83F0F0078AD7B /* KSBuiltinCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052A38802FA83F0F0078AD7B /* KSBuiltinCommand.swift */; };
 		054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		054634772F9919B0008D8549 /* KSStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054634762F9919B0008D8549 /* KSStatement.swift */; };
@@ -80,6 +82,7 @@
 		050E28062F92727400EC5CCE /* MultiDataKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultiDataKit.framework; path = "../../../Library/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64/MultiDataKit.framework"; sourceTree = "<group>"; };
 		050E280A2F9273E200EC5CCE /* ShellKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ShellKit.xcframework; path = ../../../Library/Frameworks/ShellKit.xcframework; sourceTree = "<group>"; };
 		050E280E2F92740E00EC5CCE /* ShellKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShellKit.framework; path = "../../../Library/Frameworks/ShellKit.xcframework/macos-arm64_x86_64/ShellKit.framework"; sourceTree = "<group>"; };
+		052A38802FA83F0F0078AD7B /* KSBuiltinCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSBuiltinCommand.swift; sourceTree = "<group>"; };
 		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
 		054634762F9919B0008D8549 /* KSStatement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSStatement.swift; sourceTree = "<group>"; };
 		054634792F999014008D8549 /* KSTranspiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSTranspiler.swift; sourceTree = "<group>"; };
@@ -153,11 +156,20 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		052A387F2FA83E5D0078AD7B /* BuiltinCommands */ = {
+			isa = PBXGroup;
+			children = (
+				052A38802FA83F0F0078AD7B /* KSBuiltinCommand.swift */,
+			);
+			path = BuiltinCommands;
+			sourceTree = "<group>";
+		};
 		0556F9872F5D98C10087D410 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				0557D6F92F951FB90058C7E6 /* Shell */,
 				0557D6FA2F951FCE0058C7E6 /* CommandLine */,
+				052A387F2FA83E5D0078AD7B /* BuiltinCommands */,
 				0557D6FE2F952A3F0058C7E6 /* Script */,
 				059071402FA168450033FA4D /* Engine */,
 			);
@@ -438,6 +450,7 @@
 				0557D6FC2F9520610058C7E6 /* KSCommandParser.swift in Sources */,
 				050E28032F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */,
 				059071422FA1687D0033FA4D /* KSEngine.swift in Sources */,
+				052A38822FA83F0F0078AD7B /* KSBuiltinCommand.swift in Sources */,
 				0546347A2F999014008D8549 /* KSTranspiler.swift in Sources */,
 				05AA7CCF2F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				054634782F9919B0008D8549 /* KSStatement.swift in Sources */,
@@ -456,6 +469,7 @@
 				0557D6FD2F9520610058C7E6 /* KSCommandParser.swift in Sources */,
 				050E28022F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */,
 				059071432FA1687D0033FA4D /* KSEngine.swift in Sources */,
+				052A38812FA83F0F0078AD7B /* KSBuiltinCommand.swift in Sources */,
 				0546347B2F999014008D8549 /* KSTranspiler.swift in Sources */,
 				05AA7CD02F6D24AA004BADB7 /* KSPrompt.swift in Sources */,
 				054634772F9919B0008D8549 /* KSStatement.swift in Sources */,

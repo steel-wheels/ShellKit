@@ -88,6 +88,37 @@ public class KSAllocateProcessStatement: KSStatement
         }
 }
 
+public class KSAllocateBuiltinCommandStatement: KSStatement
+{
+        private var mProcessId:         Int
+        private var mCommandName:       KSBuiltinCommandName
+        private var mArguments:         Array<String>
+
+        public init(processId pid:Int, command cmd: KSBuiltinCommandName, arguments args: Array<String>) {
+                mProcessId      = pid
+                mCommandName    = cmd
+                mArguments      = args
+        }
+
+        public override func encode() -> String {
+                let pname:      String = processIdVariableName(processId: mProcessId)
+                let newProcess: String = KSBuiltinCommand.AllocateFuncName
+                let cmdname:    String = mCommandName.rawValue
+                let argstr:     String = stringArrayValue(strings: mArguments)
+
+                let defin:  String = KSLibrary.BuiltinName.defaultInputFileHandle.rawValue
+                let defout: String = KSLibrary.BuiltinName.defaultOutputFileHandle.rawValue
+                let deferr: String = KSLibrary.BuiltinName.defaultErrorFileHandle.rawValue
+
+                let line0 = "let \(pname) = \(newProcess)(\"\(cmdname)\") ;"
+                let line1 = "\(pname).arguments      = \(argstr) ;"
+                let line2 = "\(pname).standardInput  = \(defin) ;"
+                let line3 = "\(pname).standardOutput = \(defout) ;"
+                let line4 = "\(pname).standardError  = \(deferr) ;"
+                return [line0, line1, line2, line3, line4].joined(separator: "\n")
+        }
+}
+
 public class KSRunProcessStatement: KSStatement
 {
         private var mProcessId:         Int

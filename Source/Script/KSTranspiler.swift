@@ -35,17 +35,27 @@ public class KSTranspiler
         }
 
         private func transpile(execCommand execcmd: KSExecCommand) -> Result<Array<KSStatement>, NSError> {
-                /* Check command existence */
-                switch mEnvVariable.fileNameToExecutableCommandPath(fileName: execcmd.commandPath) {
-                case .success(let cmdurl):
+                /* check command type */
+                if let bcmd = KSBuiltinCommand.searchBuiltinCommandName(name: execcmd.commandPath) {
                         var result: Array<KSStatement> = []
-                        let pid       = uniqProcessId()
-                        result.append(KSAllocateProcessStatement(processId: pid, commandPath: cmdurl.path, arguments: execcmd.arguments))
+                        let pid = uniqProcessId()
+                        result.append(KSAllocateBuiltinCommandStatement(processId: pid, command: bcmd, arguments: execcmd.arguments))
                         result.append(KSRunProcessStatement(processId: pid))
                         result.append(KSWaitProcessStatement(processId: pid))
                         return .success(result)
-                case .failure(let err):
-                        return .failure(err)
+                } else {
+                        /* Check command existence */
+                        switch mEnvVariable.fileNameToExecutableCommandPath(fileName: execcmd.commandPath) {
+                        case .success(let cmdurl):
+                                var result: Array<KSStatement> = []
+                                let pid       = uniqProcessId()
+                                result.append(KSAllocateProcessStatement(processId: pid, commandPath: cmdurl.path, arguments: execcmd.arguments))
+                                result.append(KSRunProcessStatement(processId: pid))
+                                result.append(KSWaitProcessStatement(processId: pid))
+                                return .success(result)
+                        case .failure(let err):
+                                return .failure(err)
+                        }
                 }
         }
 
