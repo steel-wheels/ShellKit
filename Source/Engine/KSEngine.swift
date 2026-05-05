@@ -33,7 +33,9 @@ public class KSEngine
 
         public func execute(statement stmt: KSStatementSequence, in ctxt: KSContext) -> NSError? {
                 let scr = stmt.encode()
-                NSLog("SCRIPT: " + scr)
+                if mEnvVariables.debugMode() {
+                        NSLog("SCRIPT: " + scr)
+                }
                 ctxt.evaluateScript(scr)
                 return nil
         }
