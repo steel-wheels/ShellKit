@@ -11,6 +11,7 @@ import JavaScriptCore
 import Foundation
 
 public enum KSBuiltinCommandName: String {
+        case printEnvCommand    = "printenv"
         case whichCommand       = "which"
 }
 
@@ -49,6 +50,8 @@ public class KSBuiltinCommand: Thread
 
         public override func main() {
                 switch mCommandName {
+                case .printEnvCommand:
+                        mExitCode = printEnvCommand()
                 case .whichCommand:
                         mExitCode = whichCommand()
                 }
@@ -62,6 +65,16 @@ public class KSBuiltinCommand: Thread
 
         private func error(message msg: String) {
                 self.standardError.write(string: "[Error] \(msg)\n")
+        }
+
+        private func printEnvCommand() -> Int {
+                let keys = environment.allKeys
+                for key in keys {
+                        if let val = environment.value(for: key) {
+                                print(message: "\(key)=\(val.encode())\n")
+                        }
+                }
+                return 0
         }
 
         private func whichCommand() -> Int {

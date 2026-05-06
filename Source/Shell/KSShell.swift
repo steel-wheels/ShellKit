@@ -64,6 +64,7 @@ public class KSShell
                         "/bin", "/usr/bin"
                 ]
                 mEnvVariable.set(strings: paths, forKey: MIEnvVariables.paths)
+                mEnvVariable.set(url: mPreference.homeDirectory, forKey: MIEnvVariables.home)
 
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,
@@ -126,7 +127,9 @@ public class KSShell
                         case .showHistory(let flag):
                                 NSLog("KSShell: showHistory(\(flag))")
                         case .updateCursorPosition(let row, let col):
-                                NSLog("\(#file) Update cursor position row=\(row) col=\(col)")
+                                if mEnvVariable.debugMode() {
+                                        NSLog("\(#file) Update cursor position row=\(row) col=\(col)")
+                                }
                                 mEnvVariable.set(number: NSNumber(value: row), forKey: MIEnvVariables.terminalRowNumber)
                                 mEnvVariable.set(number: NSNumber(value: col), forKey: MIEnvVariables.terminalColumnNumber)
                         case .escapeCode(let ecode):
