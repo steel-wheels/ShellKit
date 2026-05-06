@@ -20,6 +20,13 @@ public class KSShell
         private var mReadline:          KSReadLine?
         private var mEngine:            KSEngine
 
+        private enum UpdateTerminalSizeState {
+                case initialize
+                case getPosition
+                case getSize
+                case done
+        }
+
         public init() {
                 mDoExit                 = false
                 mStandardInput          = FileHandle.standardInput
@@ -77,6 +84,11 @@ public class KSShell
 
                 /* setup terminal */
                 setupTerminal()
+                updateTerminalSize(row: 0, col: 0)
+                // wait until the update sequence done
+                while(mUpdateTerminalSizeState != .done){
+                        Thread.sleep(forTimeInterval: 0.01)
+                }
 
                 // print prompt
                 write(output: [
@@ -96,6 +108,43 @@ public class KSShell
                         .setColor(mPreference.backgroundColor)
                 ]
                 write(output: codes)
+        }
+
+        private var mUpdateTerminalSizeState:   UpdateTerminalSizeState = .initialize
+        private var mCursorRowPosition:         Int = 0
+        private var mCursorColPosition:         Int = 0
+
+        private func updateTerminalSize(row:Int, col:Int) {
+                switch mUpdateTerminalSizeState {
+                case .initialize:
+                        //NSLog("[0] updateTerminalSize: init")
+                        mUpdateTerminalSizeState = .getPosition
+                        let ecodes: Array<MIEscapeCode> = [
+                                .requestCursorPosition
+                        ]
+                        write(output: ecodes)
+                case .getPosition:
+                        //NSLog("[1] updateTerminalSize: getPosition row=\(row), col= \(col)")
+                        mCursorRowPosition              = row
+                        mCursorColPosition              = col
+                        mUpdateTerminalSizeState        = .getSize
+                        let ecodes: Array<MIEscapeCode> = [
+                                .moveCursorTo(9999, 9999),
+                                .requestCursorPosition
+                        ]
+                        write(output: ecodes)
+                case .getSize:
+                        //NSLog("[2] updateTerminalSize: getSize row=\(row), col= \(col)")
+                        mEnvVariable.set(number: NSNumber(value: row), forKey: MIEnvVariables.terminalRowNumber)
+                        mEnvVariable.set(number: NSNumber(value: col), forKey: MIEnvVariables.terminalColumnNumber)
+                        let ecodes: Array<MIEscapeCode> = [
+                                .moveCursorTo(mCursorRowPosition, mCursorColPosition)
+                        ]
+                        write(output: ecodes)
+                        mUpdateTerminalSizeState = .done
+                case .done:
+                        break
+                }
         }
 
         private func receiveResponce(readline rdline: KSReadLine, string str: String) {
@@ -130,8 +179,15 @@ public class KSShell
                                 if mEnvVariable.debugMode() {
                                         NSLog("\(#file) Update cursor position row=\(row) col=\(col)")
                                 }
-                                mEnvVariable.set(number: NSNumber(value: row), forKey: MIEnvVariables.terminalRowNumber)
-                                mEnvVariable.set(number: NSNumber(value: col), forKey: MIEnvVariables.terminalColumnNumber)
+                                switch mUpdateTerminalSizeState {
+                                case .initialize:
+                                        mCursorRowPosition = row
+                                        mCursorColPosition = col
+                                case .getPosition, .getSize:
+                                        updateTerminalSize(row: row, col: col)
+                                case .done:
+                                        break
+                                }
                         case .escapeCode(let ecode):
                                 /* output to terminal */
                                 mStandardOutput.write(string: ecode.encode())
