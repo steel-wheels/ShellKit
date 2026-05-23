@@ -167,10 +167,7 @@ public class KSShell
                                 if !cmd.isEmpty {
                                         executeCommand(commandLine: cmd)
                                 }
-
                                 /* print newline and prompt */
-                                let newline: MIEscapeCode = .key(.lineFeed)
-                                mStandardOutput.write(string: newline.encode())
                                 let prompt: MIEscapeCode = .string(mPrompt.string)
                                 mStandardOutput.write(string: prompt.encode())
                         case .showHistory(let flag):
