@@ -18,6 +18,11 @@ public class KSCommandLineEditor
                 mIndex  = mString.startIndex
         }
 
+        public func clear() {
+                mString = ""
+                mIndex  = mString.startIndex
+        }
+
         public var string: String { get {
                 return mString
         }}
@@ -49,11 +54,6 @@ public class KSCommandLineEditor
                 }
                 return result
         }}
-
-        public func clear() {
-                mString = ""
-                mIndex  = mString.startIndex
-        }
 
         public func put(string str: String) {
                 mString.insert(contentsOf: str, at: mIndex)

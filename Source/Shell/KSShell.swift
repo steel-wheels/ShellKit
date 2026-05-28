@@ -91,9 +91,7 @@ public class KSShell
                 }
 
                 // print prompt
-                write(output: [
-                        .string(mPrompt.string)
-                ])
+                write(string: mPrompt.string)
         }
 
         public func wait() {
@@ -107,7 +105,7 @@ public class KSShell
                         .setColor(mPreference.foregroundColor),
                         .setColor(mPreference.backgroundColor)
                 ]
-                write(output: codes)
+                write(escapeCodes: codes)
         }
 
         private var mUpdateTerminalSizeState:   UpdateTerminalSizeState = .initialize
@@ -119,10 +117,7 @@ public class KSShell
                 case .initialize:
                         //NSLog("[0] updateTerminalSize: init")
                         mUpdateTerminalSizeState = .getPosition
-                        let ecodes: Array<MIEscapeCode> = [
-                                .requestCursorPosition
-                        ]
-                        write(output: ecodes)
+                        write(escapeCode: .requestCursorPosition)
                 case .getPosition:
                         //NSLog("[1] updateTerminalSize: getPosition row=\(row), col= \(col)")
                         mCursorRowPosition              = row
@@ -132,7 +127,7 @@ public class KSShell
                                 .moveCursorTo(9999, 9999),
                                 .requestCursorPosition
                         ]
-                        write(output: ecodes)
+                        write(escapeCodes: ecodes)
                 case .getSize:
                         //NSLog("[2] updateTerminalSize: getSize row=\(row), col= \(col)")
                         mEnvVariable.set(number: NSNumber(value: row), forKey: MIEnvVariables.terminalRowNumber)
@@ -140,7 +135,7 @@ public class KSShell
                         let ecodes: Array<MIEscapeCode> = [
                                 .moveCursorTo(mCursorRowPosition, mCursorColPosition)
                         ]
-                        write(output: ecodes)
+                        write(escapeCodes: ecodes)
                         mUpdateTerminalSizeState = .done
                 case .done:
                         break
@@ -154,9 +149,7 @@ public class KSShell
                         executeCommands(commands: commands)
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
-                        write(error: [
-                                .string("[Error] \(msg) at \(#file)\n")
-                        ])
+                        write(errorCode: .string("[Error] \(msg) at \(#file)\n"))
                 }
         }
 
@@ -169,7 +162,7 @@ public class KSShell
                                 }
                                 /* print newline and prompt */
                                 let prompt: MIEscapeCode = .string(mPrompt.string)
-                                mStandardOutput.write(string: prompt.encode())
+                                write(escapeCode: prompt)
                         case .showHistory(let flag):
                                 NSLog("KSShell: showHistory(\(flag))")
                         case .updateCursorPosition(let row, let col):
@@ -201,11 +194,11 @@ public class KSShell
                                 executeCommand(statement: stmt)
                         case .failure(let err):
                                 let str = MIError.errorToString(error: err)
-                                write(error: [.string(str + "\n")])
+                                write(errorCode: .string(str + "\n"))
                         }
                 case .failure(let err):
                         let msg = MIError.errorToString(error: err)
-                        write(error: [ .string(msg + "\n")])
+                        write(errorCode: .string(msg + "\n"))
                 }
         }
 
@@ -221,7 +214,16 @@ public class KSShell
                 }
         }
 
-        private func write(output ecodes: Array<MIEscapeCode>){
+        private func write(string str: String){
+                let ecode: MIEscapeCode = .string(str)
+                mStandardOutput.write(string: ecode.encode())
+        }
+
+        private func write(escapeCode ecode: MIEscapeCode){
+                mStandardOutput.write(string: ecode.encode())
+        }
+
+        private func write(escapeCodes ecodes: Array<MIEscapeCode>){
                 let str = ecodeToString(escapeCodes: ecodes)
                 mStandardOutput.write(string: str)
         }
@@ -231,9 +233,8 @@ public class KSShell
                 mStandardError.write(string: emsg)
         }
 
-        private func write(error ecodes: Array<MIEscapeCode>){
-                let str = ecodeToString(escapeCodes: ecodes)
-                mStandardError.write(string: str)
+        private func write(errorCode ecode: MIEscapeCode){
+                mStandardError.write(string: ecode.encode())
         }
 
         private func ecodeToString(escapeCodes ecodes: Array<MIEscapeCode>) -> String {
