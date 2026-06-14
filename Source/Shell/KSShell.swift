@@ -102,8 +102,8 @@ public class KSShell
 
         private func setupTerminal() {
                 let codes: Array<MIEscapeCode> = [
-                        .setColor(mPreference.foregroundColor),
-                        .setColor(mPreference.backgroundColor)
+                        .setForegroundColor(mPreference.foregroundColor),
+                        .setBackgroundColor(mPreference.backgroundColor)
                 ]
                 write(escapeCodes: codes)
         }

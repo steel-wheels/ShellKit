@@ -16,8 +16,8 @@ public class KSPreference
 
         public init() {
                 self.homeDirectory      = URL(fileURLWithPath: NSHomeDirectory())
-                self.foregroundColor    = .green(true)
-                self.backgroundColor    = .black(false)
+                self.foregroundColor    = .green
+                self.backgroundColor    = .black
         }
 
         public func load() {
