@@ -68,13 +68,39 @@ public class KSBuiltinCommand: Thread
         }
 
         private func printEnvCommand() -> Int {
-                let keys = environment.allKeys
-                for key in keys {
-                        if let val = environment.value(for: key) {
-                                print(message: "\(key)=\(val.encode())\n")
+                var result = true
+                let keys   = environment.allKeys
+                let anum   = mArguments.count
+                if anum > 0 {
+                        let vname = anum > 1
+                        for arg in mArguments {
+                                if(!printEnvVar(key: arg,  withVarName: vname)){
+                                        result = false
+                                }
+                        }
+                } else {
+                        /* print all variables */
+                        for key in keys {
+                                if(!printEnvVar(key: key, withVarName: true)){
+                                        result = false
+                                }
                         }
                 }
-                return 0
+                return result ? 0 : 1
+        }
+
+        private func printEnvVar(key keystr: String, withVarName vname: Bool) -> Bool {
+                if let val = environment.value(for: keystr) {
+                        if vname {
+                                print(message: "\(keystr)=\(val.encode())\n")
+                        } else {
+                                print(message: "\(val.encode())\n")
+                        }
+                        return true
+                } else {
+                        print(message: "[Error] Variable \(keystr) is NOT found\n")
+                        return false
+                }
         }
 
         private func whichCommand() -> Int {
