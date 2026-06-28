@@ -72,6 +72,7 @@ public class KSShell
                 ]
                 mEnvVariable.set(strings: paths, forKey: MIEnvVariables.paths)
                 mEnvVariable.set(url: mPreference.homeDirectory, forKey: MIEnvVariables.home)
+                mEnvVariable.set(shellMode: .shell)
 
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,

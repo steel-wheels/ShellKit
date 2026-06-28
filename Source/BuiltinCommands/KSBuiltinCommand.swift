@@ -69,21 +69,18 @@ public class KSBuiltinCommand: Thread
 
         private func printEnvCommand() -> Int {
                 var result = true
-                let keys   = environment.allKeys
-                let anum   = mArguments.count
-                if anum > 0 {
-                        let vname = anum > 1
-                        for arg in mArguments {
-                                if(!printEnvVar(key: arg,  withVarName: vname)){
-                                        result = false
-                                }
-                        }
+                let keys: Array<String>
+                let vname: Bool
+                if mArguments.count > 0 {
+                        keys  = mArguments
+                        vname = keys.count > 1
                 } else {
-                        /* print all variables */
-                        for key in keys {
-                                if(!printEnvVar(key: key, withVarName: true)){
-                                        result = false
-                                }
+                        keys  = environment.allKeys
+                        vname = true
+                }
+                for key in keys {
+                        if(!printEnvVar(key: key, withVarName: vname)){
+                                result = false
                         }
                 }
                 return result ? 0 : 1
