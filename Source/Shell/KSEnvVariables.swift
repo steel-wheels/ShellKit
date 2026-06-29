@@ -9,8 +9,20 @@ import MultiDataKit
 import Foundation
 
 public enum KSShellMode: Int {
-        case shell      = 0
+        public static let CommandString = "command"
+        public static let ScriptSString = "script"
+
+        case command    = 0
         case script     = 1
+
+        public func toString() -> String {
+                let result: String
+                switch self {
+                case .command:  result  = KSShellMode.CommandString
+                case .script:   result  = KSShellMode.ScriptSString
+                }
+                return result
+        }
 }
 
 extension MIEnvVariables
@@ -23,7 +35,7 @@ extension MIEnvVariables
                                 return mode
                         }
                 }
-                return .shell
+                return .command
         }
 
         public func set(shellMode mode: KSShellMode){

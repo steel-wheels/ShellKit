@@ -11,6 +11,7 @@ import JavaScriptCore
 import Foundation
 
 public enum KSBuiltinCommandName: String {
+        case modeCommand        = "mode"
         case printEnvCommand    = "printenv"
         case whichCommand       = "which"
 }
@@ -54,6 +55,8 @@ public class KSBuiltinCommand: Thread
                         mExitCode = printEnvCommand()
                 case .whichCommand:
                         mExitCode = whichCommand()
+                case .modeCommand:
+                        mExitCode = modeCommand()
                 }
                 self.standardOutput.flush()
                 self.standardError.flush()
@@ -114,6 +117,33 @@ public class KSBuiltinCommand: Thread
                         error(message: MIError.errorToString(error: err))
                         return -1
                 }
+        }
+
+        private func modeCommand() -> Int {
+                let result: Int
+                switch mArguments.count {
+                case 0:  // no argument, print current mode
+                        let mode = environment.shellMode()
+                        print(message: mode.toString() + "\n")
+                        result = 0
+                case 1:
+                        let arg = mArguments[0]
+                        switch arg {
+                        case KSShellMode.CommandString:
+                                environment.set(shellMode: .command)
+                                result = 0
+                        case KSShellMode.ScriptSString:
+                                environment.set(shellMode: .script)
+                                result = 0
+                        default:
+                                error(message: "Unknown shell mode: \(arg)\n")
+                                result = -1
+                        }
+                default: // mArguments.count >= 2
+                        error(message: "Too many commands for mode command")
+                        result = -1
+                }
+                return result
         }
 }
 
