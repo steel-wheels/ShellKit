@@ -6,15 +6,18 @@
  */
 
 import MultiDataKit
+import JavaScriptCore
 import Foundation
 
 public class KSTranspiler
 {
         private var mProcessId:         Int
+        private var mBuiltinCommand:    KSBuiltinCommand
         private var mEnvVariable:       MIEnvVariables
 
-        public init(envVariable env: MIEnvVariables) {
+        public init(virtualMachine vm: JSVirtualMachine, envVariable env: MIEnvVariables, extension ext: KSShellExtension) {
                 mProcessId      = 0
+                mBuiltinCommand = KSBuiltinCommand(virtualMachine: vm, extension: ext)
                 mEnvVariable    = env
         }
 
@@ -37,12 +40,17 @@ public class KSTranspiler
         private func transpile(execCommand execcmd: KSExecCommand) -> Result<Array<KSStatement>, NSError> {
                 /* check command type */
                 if let bcmd = KSBuiltinCommand.searchBuiltinCommandName(name: execcmd.commandPath) {
-                        var result: Array<KSStatement> = []
-                        let pid = uniqProcessId()
-                        result.append(KSAllocateBuiltinCommandStatement(processId: pid, command: bcmd, arguments: execcmd.arguments))
-                        result.append(KSRunProcessStatement(processId: pid))
-                        result.append(KSWaitProcessStatement(processId: pid))
-                        return .success(result)
+                        switch mBuiltinCommand.checkArguments(command: bcmd, arguments: execcmd.arguments) {
+                        case .success(let args):
+                                var result: Array<KSStatement> = []
+                                let pid = uniqProcessId()
+                                result.append(KSAllocateBuiltinCommandStatement(processId: pid, command: bcmd, arguments: args))
+                                result.append(KSRunProcessStatement(processId: pid))
+                                result.append(KSWaitProcessStatement(processId: pid))
+                                return .success(result)
+                        case .failure(let err):
+                                return .failure(err)
+                        }
                 } else {
                         /* Check command existence */
                         switch mEnvVariable.fileNameToExecutableCommandPath(fileName: execcmd.commandPath) {

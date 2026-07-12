@@ -6,6 +6,7 @@
  */
 
 import MultiDataKit
+import JavaScriptCore
 import Foundation
 
 public class KSShell
@@ -14,6 +15,8 @@ public class KSShell
         private var mStandardOutput:    FileHandle
         private var mStandardError:     FileHandle
         private var mPreference:        KSPreference
+        private var mVirtualMachine:    JSVirtualMachine
+        private var mExtension:         KSShellExtension
         private var mEnvVariable:       MIEnvVariables
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
@@ -27,15 +30,21 @@ public class KSShell
                 case done
         }
 
-        public init() {
+        public init(extension ext: KSShellExtension) {
+                guard let vm = JSVirtualMachine() else {
+                        fatalError("Failed to allocate virtual machine")
+                }
+
                 mDoExit                 = false
+                mExtension              = ext
                 mStandardInput          = FileHandle.standardInput
                 mStandardOutput         = FileHandle.standardOutput
                 mStandardError          = FileHandle.standardError
                 mPreference             = KSPreference()
+                mVirtualMachine         = vm
                 mEnvVariable            = MIEnvVariables(parent: nil)
                 mPrompt                 = KSPrompt()
-                mEngine                 = KSEngine(environment: mEnvVariable)
+                mEngine                 = KSEngine(virtualMachine: vm, environment: mEnvVariable)
                 mReadline               = nil
         }
 
@@ -72,7 +81,6 @@ public class KSShell
                 ]
                 mEnvVariable.set(strings: paths, forKey: MIEnvVariables.paths)
                 mEnvVariable.set(url: mPreference.homeDirectory, forKey: MIEnvVariables.home)
-                mEnvVariable.set(shellMode: .command)
 
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,
@@ -189,7 +197,7 @@ public class KSShell
         private func executeCommand(commandLine str: String) {
                 switch KSCommandParser.parse(commandLine: str) {
                 case .success(let cmdlines):
-                        let transpiler = KSTranspiler(envVariable: mEnvVariable)
+                        let transpiler = KSTranspiler(virtualMachine: mVirtualMachine, envVariable: mEnvVariable, extension: mExtension)
                         switch transpiler.transpile(commandLine: cmdlines) {
                         case .success(let stmt):
                                 executeCommand(statement: stmt)

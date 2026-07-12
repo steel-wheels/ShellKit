@@ -5,15 +5,18 @@
  *   Copyright (C) 2026 Steel Wheels Project
  */
 
+import MultiDataKit
 import Foundation
 
 public class KSPrompt
 {
-        private var mPrompt: String
+        private var mPrompt:            String
 
-        public var string: String { get { return mPrompt }}
+        public var string: String { get {
+                return mPrompt
+        }}
 
         public init() {
-                mPrompt = "% "
+                mPrompt         = "% "
         }
 }

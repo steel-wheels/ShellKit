@@ -11,14 +11,17 @@ import JavaScriptCore
 import Foundation
 
 public enum KSBuiltinCommandName: String {
-        case modeCommand        = "mode"
         case printEnvCommand    = "printenv"
+        case runCommand         = "run"
         case whichCommand       = "which"
 }
 
 public class KSBuiltinCommand: Thread
 {
         public static let AllocateFuncName = "newBuiltinCommand"
+
+        private var mVirtualMachine:    JSVirtualMachine
+        private var mExtension:         KSShellExtension
 
         public var standardInput:  FileHandle           = FileHandle.standardInput
         public var standardOutput: FileHandle           = FileHandle.standardOutput
@@ -29,8 +32,71 @@ public class KSBuiltinCommand: Thread
         private var mArguments:         Array<String>           = []
         private var mExitCode:          Int                     = -1
 
-        static func searchBuiltinCommandName(name nm: String) -> KSBuiltinCommandName? {
+        static public func searchBuiltinCommandName(name nm: String) -> KSBuiltinCommandName? {
                 return KSBuiltinCommandName(rawValue: nm)
+        }
+
+        public init(virtualMachine vm: JSVirtualMachine, extension ext: KSShellExtension) {
+                mVirtualMachine = vm
+                mExtension      = ext
+        }
+
+        public func checkArguments(command cmd: KSBuiltinCommandName, arguments args: Array<String>) -> Result<Array<String>, NSError> {
+                switch cmd {
+                case .printEnvCommand:
+                        return checkPrintArguments(arguments: args)
+                case .runCommand:
+                        return checkRunArguments(arguments: args)
+                case .whichCommand:
+                        return checkWhichArguments(arguments: args)
+                }
+        }
+
+        public func checkPrintArguments(arguments args: Array<String>) -> Result<Array<String>, NSError> {
+                return .success(args)
+        }
+
+        public func checkRunArguments(arguments args: Array<String>) -> Result<Array<String>, NSError> {
+                switch args.count {
+                case 0:
+                        if mExtension.doesSupportFileSelector {
+                                switch mExtension.selectFile(title: "Select the script", fileType: .file, extension: "js") {
+                                case .success(let url):
+                                        return .success([url.path()])
+                                case .failure(let err):
+                                        return .failure(err)
+                                }
+                        } else {
+                                let err = MIError.fileError(message: "File name must be given")
+                                return .failure(err)
+                        }
+                case 1:
+                        /* path of input file is given */
+                        let path = args[0]
+                        if FileManager.default.fileExists(atPath: path) {
+                                return .success(args)
+                        } else {
+                                let err = MIError.fileError(message: "File is not exist: \(path)")
+                                return .failure(err)
+                        }
+                default:
+                        let err = MIError.fileError(message: "Invalid number of argumengts")
+                        return .failure(err)
+                }
+        }
+
+        public func checkWhichArguments(arguments args: Array<String>) -> Result<Array<String>, NSError> {
+                guard args.count == 1 else {
+                        let err = MIError.fileError(message: "Invalid number of argumengts")
+                        return .failure(err)
+                }
+                let path = args[0]
+                if FileManager.default.fileExists(atPath: path) {
+                        return .success(args)
+                } else {
+                        let err = MIError.fileError(message: "File is not exist: \(path)")
+                        return .failure(err)
+                }
         }
 
         public var exitCode: Int { get { return mExitCode }}
@@ -53,10 +119,10 @@ public class KSBuiltinCommand: Thread
                 switch mCommandName {
                 case .printEnvCommand:
                         mExitCode = printEnvCommand()
+                case .runCommand:
+                        mExitCode = runCommand()
                 case .whichCommand:
                         mExitCode = whichCommand()
-                case .modeCommand:
-                        mExitCode = modeCommand()
                 }
                 self.standardOutput.flush()
                 self.standardError.flush()
@@ -103,6 +169,31 @@ public class KSBuiltinCommand: Thread
                 }
         }
 
+        private func runCommand() -> Int {
+                guard mArguments.count == 1 else {
+                        error(message: "The \"run\" command requires at least one parameter")
+                        return -1
+                }
+                let srcpath = mArguments[0]
+                let scrurl  = URL(filePath: srcpath)
+                let lib     = KSLibrary()
+                let hdl     = MIProcessFileHandle(input: standardInput,
+                                                 output: standardOutput,
+                                                 error: standardError)
+                switch lib.load(virtualMachine: mVirtualMachine, processFileHandle: hdl, environment: self.environment) {
+                case .success(let ctxt):
+                        if let _ =  lib.load(into: ctxt, sourceFile: scrurl) {
+                                standardError.write(string: "Failed to execute: \(srcpath)")
+                                return -1
+                        } else {
+                                return 0 // no error
+                        }
+                case .failure(_):
+                        standardError.write(string: "Failed to load library")
+                        return -1
+                }
+        }
+
         private func whichCommand() -> Int {
                 guard mArguments.count > 0 else {
                         error(message: "The \"which\" command requires at least one parameter")
@@ -118,157 +209,6 @@ public class KSBuiltinCommand: Thread
                         return -1
                 }
         }
-
-        private func modeCommand() -> Int {
-                let result: Int
-                switch mArguments.count {
-                case 0:  // no argument, print current mode
-                        let mode = environment.shellMode()
-                        print(message: mode.toString() + "\n")
-                        result = 0
-                case 1:
-                        let arg = mArguments[0]
-                        switch arg {
-                        case KSShellMode.CommandString:
-                                environment.set(shellMode: .command)
-                                result = 0
-                        case KSShellMode.ScriptSString:
-                                environment.set(shellMode: .script)
-                                result = 0
-                        default:
-                                error(message: "Unknown shell mode: \(arg)\n")
-                                result = -1
-                        }
-                default: // mArguments.count >= 2
-                        error(message: "Too many commands for mode command")
-                        result = -1
-                }
-                return result
-        }
 }
 
-@objc public protocol KSBuiltinCommandProtocol: JSExport
-{
-        var arguments:          JSValue { get set }      // Array<String>
-        var standardInput:      JSValue {  get set }
-        var standardOutput:     JSValue {  get set }
-        var standardError:      JSValue {  get set }
-        func run()
-        func wait() -> JSValue
-}
-
-@objc public class KSBuiltinCommandObject: NSObject, KSBuiltinCommandProtocol
-{
-        private var mCommand:   KSBuiltinCommand
-        private var mContext:   KSContext
-
-        public init(command cmd: KSBuiltinCommand, context ctxt: KSContext){
-                mCommand        = cmd
-                mContext        = ctxt
-        }
-
-        public var arguments: JSValue {
-                get {
-                        return KSConverter.stringArrayToValue(mCommand.arguments, in: mContext)
-                }
-                set(val) {
-                        switch KSConverter.valueToStringArray(val) {
-                        case .success(let strs):
-                                mCommand.arguments = strs
-                        case .failure(let err):
-                                let msg = MIError.errorToString(error: err)
-                                NSLog("[Error] \(msg)")
-                        }
-                }
-        }
-
-        public var standardInput: JSValue {
-                get {
-                        let hdl = KSFileHandle(fileHandle: mCommand.standardInput, context: mContext)
-                        return JSValue(object: hdl, in: mContext)
-                }
-                set(val){
-                        if let hdl = val.toObject() as? KSFileHandle {
-                                mCommand.standardInput = hdl.core
-                        } else {
-                                NSLog("[Error] Failed to get standard input")
-                        }
-                }
-        }
-
-        public var standardOutput: JSValue {
-                get {
-                        let hdl = KSFileHandle(fileHandle: mCommand.standardOutput, context: mContext)
-                        return JSValue(object: hdl, in: mContext)
-                }
-                set(val){
-                        if let hdl = val.toObject() as? KSFileHandle {
-                                mCommand.standardOutput = hdl.core
-                        } else {
-                                NSLog("[Error] Failed to get standard input")
-                        }
-                }
-        }
-
-        public var standardError: JSValue {
-                get {
-                        let hdl = KSFileHandle(fileHandle: mCommand.standardError, context: mContext)
-                        return JSValue(object: hdl, in: mContext)
-                }
-                set(val){
-                        if let hdl = val.toObject() as? KSFileHandle {
-                                mCommand.standardError = hdl.core
-                        } else {
-                                NSLog("[Error] Failed to get standard input")
-                        }
-                }
-        }
-
-        public func run() {
-                mCommand.start()
-        }
-
-        public func wait() -> JSValue {
-                let ecode: Int
-                switch Thread.wait(thread: mCommand) {
-                case .finished:
-                        ecode = mCommand.exitCode
-                case .cancelled:
-                        ecode = -1
-                case .executing:
-                        NSLog("[Error] Not finished at \(#file)")
-                        ecode = -1
-                @unknown default:
-                        NSLog("[Error] Can not happen at \(#file)")
-                        ecode = -1
-                }
-                return JSValue(int32: Int32(ecode), in: mContext)
-        }
-
-        public static func load(context ctxt: KSContext, environment env: MIEnvVariables) {
-                let funcname = KSBuiltinCommand.AllocateFuncName
-
-                /* newProcess */
-                let newCommandFunc: @convention(block) (_ nameval: JSValue) -> JSValue = {
-                        (_ nameval: JSValue) -> JSValue in
-                        guard let str = nameval.toString() else {
-                                NSLog("[Error] String is required for \(funcname)")
-                                return JSValue(nullIn: ctxt)
-                        }
-                        guard let name = KSBuiltinCommandName(rawValue: str) else {
-                                NSLog("[Error] Unknown built in command name: \(str)")
-                                return JSValue(nullIn: ctxt)
-                        }
-
-                        let cmd = KSBuiltinCommand()
-                        cmd.setup(commandName: name)
-                        cmd.environment = env
-
-                        let obj = KSBuiltinCommandObject(command: cmd, context: ctxt)
-                        return JSValue(object: obj, in: ctxt)
-                }
-
-                ctxt.set(name: funcname, function: newCommandFunc)
-        }
-}
 
