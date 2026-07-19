@@ -59,13 +59,8 @@ public class KSBuiltinCommand: Thread
         public func checkRunArguments(arguments args: Array<String>) -> Result<Array<String>, NSError> {
                 switch args.count {
                 case 0:
-                        if mExtension.doesSupportFileSelector {
-                                switch mExtension.selectFile(title: "Select the script", fileType: .file, extension: "js") {
-                                case .success(let url):
-                                        return .success([url.path()])
-                                case .failure(let err):
-                                        return .failure(err)
-                                }
+                        if let url = selectFile() {
+                                return .success([url.path()])
                         } else {
                                 let err = MIError.fileError(message: "File name must be given")
                                 return .failure(err)
@@ -83,6 +78,11 @@ public class KSBuiltinCommand: Thread
                         let err = MIError.fileError(message: "Invalid number of argumengts")
                         return .failure(err)
                 }
+        }
+
+        private func selectFile() -> URL? {
+                guard mExtension.doesSupportFileSelector else { return nil }
+                return mExtension.selectFile(title: "Select the script", fileType: .file, extension: "js")
         }
 
         public func checkWhichArguments(arguments args: Array<String>) -> Result<Array<String>, NSError> {
@@ -210,5 +210,4 @@ public class KSBuiltinCommand: Thread
                 }
         }
 }
-
 

@@ -22,8 +22,7 @@ open class KSShellExtension
                 return false
         }}
 
-        open func selectFile(title tstr: String, fileType file: FileType, extension estr: String) -> Result<URL, NSError> {
-                let err = MIError.fileError(message: "Not supported")
-                return .failure(err)
+        open func selectFile(title tstr: String, fileType file: FileType, extension estr: String) -> URL? {
+                return nil
         }
 }
