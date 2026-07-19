@@ -4,7 +4,13 @@ PROJECT_NAME	?= ShellKit
 DERIVED_BASE	= $(HOME)/build/derived-data/
 PRODUCT_PATH	= Build/Products/Release
 
-all: install_xc
+LIB_DIR			= ../Resource/Library
+
+JAVASCRIPTKIT_DIR	= ../../JavaScriptKit
+JAVASCRIPTKIT_LIB_DIR	= $(JAVASCRIPTKIT_DIR)/Resource/Library
+
+
+all: install_lib install_xc
 
 clean:
 	(cd $(DERIVED_BASE) && rm -rf $(PROJECT_NAME)_macOS)
@@ -19,6 +25,14 @@ install_xc: install_osx install_ios install_ios_sim
 	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_iOS/$(PRODUCT_PATH)-iphoneos/$(PROJECT_NAME).framework \
 	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_iOS_sim/$(PRODUCT_PATH)-iphonesimulator/$(PROJECT_NAME).framework \
 	  -output $(HOME)/Library/Frameworks/$(PROJECT_NAME).xcframework
+
+install_lib: $(LIB_DIR)/Library.js $(LIB_DIR)/types/Library.d.ts
+
+$(LIB_DIR)/Library.js: $(JAVASCRIPTKIT_LIB_DIR)/Library.js
+	cp $< $@
+
+$(LIB_DIR)/types/Library.d.ts: $(JAVASCRIPTKIT_LIB_DIR)/types/Library.d.ts
+	cp $< $@
 
 install_osx: dummy
 	xcodebuild build \
