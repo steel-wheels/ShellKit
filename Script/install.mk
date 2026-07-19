@@ -4,10 +4,10 @@ PROJECT_NAME	?= ShellKit
 DERIVED_BASE	= $(HOME)/build/derived-data/
 PRODUCT_PATH	= Build/Products/Release
 
-LIB_DIR			= ../Resource/Library
+LIB_DIR		= ../Resource/Library
 
-JAVASCRIPTKIT_DIR	= ../../JavaScriptKit
-JAVASCRIPTKIT_LIB_DIR	= $(JAVASCRIPTKIT_DIR)/Resource/Library
+JSKIT_DIR	= ../../JavaScriptKit
+JSKIT_LIB_DIR	= $(JSKIT_DIR)/Resource/Library
 
 
 all: install_lib install_xc
@@ -28,10 +28,10 @@ install_xc: install_osx install_ios install_ios_sim
 
 install_lib: $(LIB_DIR)/Library.js $(LIB_DIR)/types/Library.d.ts
 
-$(LIB_DIR)/Library.js: $(JAVASCRIPTKIT_LIB_DIR)/Library.js
+$(LIB_DIR)/Library.js: $(JSKIT_LIB_DIR)/Library.js
 	cp $< $@
 
-$(LIB_DIR)/types/Library.d.ts: $(JAVASCRIPTKIT_LIB_DIR)/types/Library.d.ts
+$(LIB_DIR)/types/Library.d.ts: $(JSKIT_LIB_DIR)/types/Library.d.ts
 	cp $< $@
 
 install_osx: dummy
