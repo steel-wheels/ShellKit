@@ -21,7 +21,6 @@ public class KSShell
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
         private var mReadline:          KSReadLine?
-        private var mEngine:            KSEngine
 
         private enum UpdateTerminalSizeState {
                 case initialize
@@ -44,7 +43,6 @@ public class KSShell
                 mVirtualMachine         = vm
                 mEnvVariable            = MIEnvVariables(parent: nil)
                 mPrompt                 = KSPrompt()
-                mEngine                 = KSEngine(virtualMachine: vm, environment: mEnvVariable)
                 mReadline               = nil
         }
 
@@ -76,11 +74,12 @@ public class KSShell
                 mPreference.load()
 
                 /* initializ environment variables */
-                let paths: Array<String> = [
-                        "/bin", "/usr/bin"
+                let paths: Array<URL> = [
+                        URL(fileURLWithPath: "/bin"),
+                        URL(fileURLWithPath: "/usr/bin")
                 ]
-                mEnvVariable.set(strings: paths, forKey: MIEnvVariables.paths)
-                mEnvVariable.set(url: mPreference.homeDirectory, forKey: MIEnvVariables.home)
+                mEnvVariable.paths = paths
+                mEnvVariable.home  = mPreference.homeDirectory
 
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,
@@ -139,8 +138,8 @@ public class KSShell
                         write(escapeCodes: ecodes)
                 case .getSize:
                         //NSLog("[2] updateTerminalSize: getSize row=\(row), col= \(col)")
-                        mEnvVariable.set(number: NSNumber(value: row), forKey: MIEnvVariables.terminalRowNumber)
-                        mEnvVariable.set(number: NSNumber(value: col), forKey: MIEnvVariables.terminalColumnNumber)
+                        mEnvVariable.row    = row
+                        mEnvVariable.column = col
                         let ecodes: Array<MIEscapeCode> = [
                                 .moveCursorTo(mCursorRowPosition, mCursorColPosition)
                         ]
@@ -175,7 +174,7 @@ public class KSShell
                         case .showHistory(let flag):
                                 NSLog("KSShell: showHistory(\(flag))")
                         case .updateCursorPosition(let row, let col):
-                                if mEnvVariable.debugMode() {
+                                if mEnvVariable.debugMode {
                                         NSLog("\(#file) Update cursor position row=\(row) col=\(col)")
                                 }
                                 switch mUpdateTerminalSizeState {
@@ -197,10 +196,10 @@ public class KSShell
         private func executeCommand(commandLine str: String) {
                 switch KSCommandParser.parse(commandLine: str) {
                 case .success(let cmdlines):
-                        let transpiler = KSTranspiler(virtualMachine: mVirtualMachine, envVariable: mEnvVariable, extension: mExtension)
-                        switch transpiler.transpile(commandLine: cmdlines) {
-                        case .success(let stmt):
-                                executeCommand(statement: stmt)
+                        let transpiler = KSTranspiler(extension: mExtension)
+                        switch transpiler.transpile(commandLines: cmdlines) {
+                        case .success(let txt):
+                                executeCommand(text: txt)
                         case .failure(let err):
                                 let str = MIError.errorToString(error: err)
                                 write(errorCode: .string(str + "\n"))
@@ -211,16 +210,10 @@ public class KSShell
                 }
         }
 
-        private func executeCommand(statement stmt: KSStatementSequence) {
-                let prochdl = MIProcessFileHandle(input: mStandardInput, output: mStandardOutput, error: mStandardError)
-                switch mEngine.loadContext(processFileHandle: prochdl) {
-                case .success(let ctxt):
-                        if let err = mEngine.execute(statement: stmt, in: ctxt) {
-                                write(errorInfo: err)
-                        }
-                case .failure(let err):
-                        write(errorInfo: err)
-                }
+        private func executeCommand(text txt: MIText) {
+                //if mEnvVariable.debugMode() {
+                        write(string: txt.toString())
+                //}
         }
 
         private func write(string str: String){

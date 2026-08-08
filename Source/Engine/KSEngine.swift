@@ -10,6 +10,7 @@ import MultiDataKit
 import Foundation
 import JavaScriptCore
 
+/*
 public class KSEngine
 {
         private var mVirtualMachine:    JSVirtualMachine
@@ -40,3 +41,5 @@ public class KSEngine
                 return nil
         }
 }
+*/
+

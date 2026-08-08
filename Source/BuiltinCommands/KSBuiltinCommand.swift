@@ -14,8 +14,13 @@ public enum KSBuiltinCommandName: String {
         case printEnvCommand    = "printenv"
         case runCommand         = "run"
         case whichCommand       = "which"
+
+        static public func decodeByName(commandPath path: String) -> KSBuiltinCommandName? {
+                return KSBuiltinCommandName(rawValue: path)
+        }
 }
 
+/*
 public class KSBuiltinCommand: Thread
 {
         public static let AllocateFuncName = "newBuiltinCommand"
@@ -209,5 +214,5 @@ public class KSBuiltinCommand: Thread
                         return -1
                 }
         }
-}
+}*/
 

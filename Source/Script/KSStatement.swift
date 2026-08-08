@@ -8,6 +8,7 @@
 import JavaScriptKit
 import Foundation
 
+/*
 open class KSStatement
 {
         public func processIdVariableName(processId pid: Int) -> String {
@@ -146,4 +147,5 @@ public class KSWaitProcessStatement: KSStatement
                 return "\(pname).wait() ;"
         }
 }
+*/
 
