@@ -10,7 +10,7 @@
 /// <reference path="types/FileHandle.d.ts"/>
 class Console {
     log(str) {
-        stdout.write(str);
+        standardOutputFileHandle.write(str);
     }
 }
 "use strict";
