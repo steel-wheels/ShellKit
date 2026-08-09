@@ -127,6 +127,7 @@ declare const enum TextColor {
 declare class Console {
     log(str: string): void;
 }
+declare var console: Console;
 /**
  * @file ThreadFunc.ts
  */

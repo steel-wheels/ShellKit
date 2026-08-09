@@ -78,8 +78,10 @@ public class KSShell
                         URL(fileURLWithPath: "/bin"),
                         URL(fileURLWithPath: "/usr/bin")
                 ]
-                mEnvVariable.paths = paths
-                mEnvVariable.home  = mPreference.homeDirectory
+                let homedir = mPreference.homeDirectory
+                mEnvVariable.paths              = paths
+                mEnvVariable.home               = homedir
+                mEnvVariable.currentDirectory   = homedir
 
                 /* initialize terminal */
                 let readline = KSReadLine(input:  mStandardInput,

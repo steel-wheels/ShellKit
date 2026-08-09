@@ -6,8 +6,16 @@
 
 function printenv(args: string[])
 {
-	for(let arg in args){
-		let urlp = env.getURL(arg) ;
+	if(args.length == 0){
+		args = env.allKeys ;
+	}
+	for(const key of args){
+		let val = env.get(key) ;
+		if(val != null){
+			console.log(val + "\n") ;
+		} else {
+			console.log("nil\n") ;
+		}
 	}
 }
 
