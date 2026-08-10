@@ -125,6 +125,7 @@
 		050E28062F92727400EC5CCE /* MultiDataKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultiDataKit.framework; path = "../../../Library/Frameworks/MultiDataKit.xcframework/macos-arm64_x86_64/MultiDataKit.framework"; sourceTree = "<group>"; };
 		050E280A2F9273E200EC5CCE /* ShellKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ShellKit.xcframework; path = ../../../Library/Frameworks/ShellKit.xcframework; sourceTree = "<group>"; };
 		050E280E2F92740E00EC5CCE /* ShellKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShellKit.framework; path = "../../../Library/Frameworks/ShellKit.xcframework/macos-arm64_x86_64/ShellKit.framework"; sourceTree = "<group>"; };
+		0520E945302935A800FADF44 /* printenv.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = printenv.js; sourceTree = "<group>"; };
 		052A38802FA83F0F0078AD7B /* KSBuiltinCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSBuiltinCommand.swift; sourceTree = "<group>"; };
 		053594B2300CA084007052B3 /* Library.d.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Library.d.ts; sourceTree = "<group>"; };
 		053594B3300CA096007052B3 /* Library.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Library.js; sourceTree = "<group>"; };
@@ -134,6 +135,7 @@
 		0557D6FB2F9520610058C7E6 /* KSCommandParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandParser.swift; sourceTree = "<group>"; };
 		05672AA52F5DA9F1003F832E /* ShellKit.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShellKit.md; sourceTree = "<group>"; };
 		0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = JavaScriptKit.xcframework; path = ../../../Library/Frameworks/JavaScriptKit.xcframework; sourceTree = "<group>"; };
+		059388AD3029C21100BE45D5 /* which.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = which.js; sourceTree = "<group>"; };
 		05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSPrompt.swift; sourceTree = "<group>"; };
 		05BD5DC42FA619100056E284 /* KSPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSPreference.swift; sourceTree = "<group>"; };
 		05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
@@ -199,6 +201,15 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		0520E9443029309500FADF44 /* Script */ = {
+			isa = PBXGroup;
+			children = (
+				059388AD3029C21100BE45D5 /* which.js */,
+				0520E945302935A800FADF44 /* printenv.js */,
+			);
+			path = Script;
+			sourceTree = "<group>";
+		};
 		052A387F2FA83E5D0078AD7B /* BuiltinCommands */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +221,7 @@
 		053594AF300CA019007052B3 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				0520E9443029309500FADF44 /* Script */,
 				053594B0300CA03B007052B3 /* Library */,
 			);
 			name = Resource;
@@ -394,6 +406,7 @@
 				05E842F82F5CF6490021856B /* Frameworks */,
 				053594B7300CA151007052B3 /* CopyFiles */,
 				053594B9300CA17E007052B3 /* CopyFiles */,
+				059388AC3029C1A000BE45D5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -418,6 +431,7 @@
 				05E843092F5CFBA50021856B /* Frameworks */,
 				053594BB300CA1D2007052B3 /* CopyFiles */,
 				053594BD300CA1E4007052B3 /* CopyFiles */,
+				059388AE3029C22100BE45D5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -478,6 +492,43 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		059388AC3029C1A000BE45D5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ../Resource/Script && make\n";
+		};
+		059388AE3029C22100BE45D5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ../Resource/Script && make\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0507EFF42F79E8CF003CBDC0 /* Sources */ = {

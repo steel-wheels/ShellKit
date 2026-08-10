@@ -4,7 +4,7 @@
 
 /// <reference path="types/Library.d.ts"/>
 
-function printenv(args: string[])
+function main(args: string[]): number
 {
 	if(args.length == 0){
 		args = env.allKeys ;
@@ -17,5 +17,6 @@ function printenv(args: string[])
 			console.log("nil\n") ;
 		}
 	}
+	return 0 ;
 }
 

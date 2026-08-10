@@ -3,7 +3,7 @@
  * file: printenv.ts
  */
 /// <reference path="types/Library.d.ts"/>
-function printenv(args) {
+function main(args) {
     if (args.length == 0) {
         args = env.allKeys;
     }
@@ -16,4 +16,5 @@ function printenv(args) {
             console.log("nil\n");
         }
     }
+    return 0;
 }
