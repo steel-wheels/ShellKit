@@ -6,6 +6,7 @@
  */
 
 import MultiDataKit
+import JavaScriptKit
 import JavaScriptCore
 import Foundation
 
@@ -213,9 +214,24 @@ public class KSShell
         }
 
         private func executeCommand(text txt: MIText) {
+                let script = txt.toString()
                 //if mEnvVariable.debugMode() {
-                        write(string: txt.toString())
+                        write(string: script)
                 //}
+                executeCommand(script: script)
+        }
+
+        private func executeCommand(script scr: String) {
+                let prochdl = MIProcessFileHandle(input:  mStandardInput,
+                                                  output: mStandardOutput,
+                                                  error:  mStandardError)
+                let lib  = KSLibrary()
+                switch lib.load(virtualMachine: mVirtualMachine, processFileHandle: prochdl, environment: mEnvVariable) {
+                case .success(let ctxt):
+                        ctxt.evaluateScript(scr)
+                case .failure(let err):
+                        NSLog("[Error] \(MIError.errorToString(error: err))")
+                }
         }
 
         private func write(string str: String){
