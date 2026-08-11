@@ -28,15 +28,16 @@ public class KSTranspiler
                 }
         }
 
-        private var mExtension: KSShellExtension
+        private var mExtension:         KSShellExtension
+        private var mEnvironment:       MIEnvVariables
 
-        public init(extension ext: KSShellExtension) {
-                mExtension = ext
+        public init(extension ext: KSShellExtension, environment env: MIEnvVariables) {
+                mExtension      = ext
+                mEnvironment    = env
         }
 
         public func transpile(commandLines cmdlines: Array<KSCommandLine>) -> Result<MIText, NSError> {
-                var result = MIParagraph()
-
+                let result = MIParagraph()
                 let phases: Array<Phase> =  [.allocation, .run, .wait]
                 for phase in phases {
                         var pid = 0
@@ -62,54 +63,27 @@ public class KSTranspiler
         }
 
         private func transpile(phase: PhaseInfo, execCommand execcmd: KSExecCommand) -> Result<MIText, NSError> {
-                if let bcmd = KSBuiltinCommandName.decodeByName(commandPath: execcmd.commandPath) {
+                if let bcmd = KSBuiltinCommand.decodeByName(commandPath: execcmd.commandPath) {
                         /* modift arguments */
-                        switch bcmd {
-                        case .printEnvCommand:
-                                return transpile(phase: phase, printEnvCommand: execcmd.arguments)
-                        case .runCommand:
-                                return transpile(phase: phase, runCommand: execcmd.arguments)
-                        case .whichCommand:
-                                return transpile(phase: phase, whichCommand: execcmd.arguments)
-                        }
-                } else {
-                        return transpile(phase: phase, systemCommand: execcmd)
-                }
-        }
-
-        private func transpile(phase: PhaseInfo, printEnvCommand args: Array<String>) -> Result<MIText, NSError> {
-                let param = "[" + args.joined(separator: ",") + "]"
-                return transpile(phase: phase, scriptCommand: "printEnv(\(param)) ;")
-        }
-
-        private func transpile(phase: PhaseInfo, runCommand args: Array<String>) -> Result<MIText, NSError> {
-                if args.count == 0{
-                        if let url = selectFile() {
-                                return transpile(phase: phase, scriptCommand: "run(newURL(\"\(url.path)\")) ;")
+                        if let url = bcmd.executableURL {
+                                return transpileThread(phase: phase, arguments: execcmd.arguments, file: url)
                         } else {
-                                let err = MIError.fileError(message: "Failed to select file to run")
+                                let err = MIError.fileError(message: "No URL for command \(bcmd.commandName)")
                                 return .failure(err)
                         }
-                } else if args.count == 1 {
-                        return transpile(phase: phase, scriptCommand: "run(newURL(\"\(args[0])\")) ;")
                 } else {
-                        let err = MIError.fileError(message: "Unexpected num of args for run command")
-                        return .failure(err)
+                        return transpileProcess(phase: phase, systemCommand: execcmd)
                 }
         }
 
-        private func transpile(phase: PhaseInfo, whichCommand args: Array<String>) -> Result<MIText, NSError> {
-                if args.count == 1 {
-                        return transpile(phase: phase, scriptCommand: "which(newURL(\"\(args[0])\")) ;")
-                } else {
-                        let err = MIError.fileError(message: "Unexpected num of args for which command")
-                        return .failure(err)
-                }
-        }
-
-        private func transpile(phase: PhaseInfo, systemCommand execcmd: KSExecCommand) -> Result<MIText, NSError> {
+        private func transpileProcess(phase: PhaseInfo, systemCommand execcmd: KSExecCommand) -> Result<MIText, NSError> {
                 let pid = phase.id
                 let procname = "proc\(pid)"
+
+                guard let path = FileManager.default.searchExecutableFile(name: execcmd.commandPath, in: mEnvironment) else {
+                        return .failure(MIError.fileError(message: "Command not found: \(execcmd.commandPath)"))
+                }
+
                 switch phase.phase {
                 case .allocation:
                         let inf  = inputFileHandleName(processId: pid)
@@ -118,7 +92,7 @@ public class KSTranspiler
                         let scr  = "let \(procname) = allocateProcess(\(inf), \(outf), \(errf)) ;"
                         return .success(MILine(line: scr))
                 case .run:
-                        let url  = "newURL(\"\(execcmd.commandPath)\")"
+                        let url  = "newURL(\"\(path.path)\")"
                         let args = "[" + execcmd.arguments.joined(separator: ",") + "]"
                         let scr  = "startProcess(\(procname), \(url), \(args)) ;"
                         return .success(MILine(line: scr))
@@ -128,9 +102,21 @@ public class KSTranspiler
                 }
         }
 
-        private func transpile(phase: PhaseInfo, scriptCommand scr: String) -> Result<MIText, NSError> {
+        private func transpileThread(phase: PhaseInfo, arguments args: Array<String>, file url: URL) -> Result<MIText, NSError> {
                 let pid = phase.id
                 let thdname = "thd\(pid)"
+
+                var arguments: String = "["
+                var is1starg = true
+                for arg in args {
+                        if !is1starg { arguments += ", " }
+                        arguments += "\"" + arg + "\""
+                        is1starg = false
+                }
+                arguments += "]"
+
+                let urlstr: String = "newURL(\"" + url.path + "\")"
+
                 switch phase.phase {
                 case .allocation:
                         let inf  = inputFileHandleName(processId: pid)
@@ -139,7 +125,7 @@ public class KSTranspiler
                         let scr  = "let \(thdname) = allocateThread(\(inf), \(outf), \(errf)) ;"
                         return .success(MILine(line: scr))
                 case .run:
-                        let scr  = "startThread(\(thdname), \(scr)) ;"
+                        let scr  = "startThreadWithFile(\(thdname), \(arguments), \(urlstr)) ;"
                         return .success(MILine(line: scr))
                 case .wait:
                         let scr  = "waitThread(\(thdname)) ;"
@@ -164,71 +150,4 @@ public class KSTranspiler
                 return mExtension.selectFile(title: "Select the script", fileType: .file, extension: "js")
         }
 }
-
-/*
-public class KSTranspiler
-{
-        private var mProcessId:         Int
-        private var mBuiltinCommand:    KSBuiltinCommand
-        private var mEnvVariable:       MIEnvVariables
-
-        public init(virtualMachine vm: JSVirtualMachine, envVariable env: MIEnvVariables, extension ext: KSShellExtension) {
-                mProcessId      = 0
-                mBuiltinCommand = KSBuiltinCommand(virtualMachine: vm, extension: ext)
-                mEnvVariable    = env
-        }
-
-        public func transpile(commandLine cmdlines: Array<KSCommandLine>) -> Result<KSStatementSequence, NSError> {
-                let result = KSStatementSequence()
-                for cmdline in cmdlines {
-                        switch cmdline {
-                        case .exec(let execcmd):
-                                switch transpile(execCommand: execcmd) {
-                                case .success(let stmts):
-                                        result.append(contentsOf: stmts)
-                                case .failure(let err):
-                                        return .failure(err)
-                                }
-                        }
-                }
-                return .success(result)
-        }
-
-        private func transpile(execCommand execcmd: KSExecCommand) -> Result<Array<KSStatement>, NSError> {
-                /* check command type */
-                if let bcmd = KSBuiltinCommand.searchBuiltinCommandName(name: execcmd.commandPath) {
-                        switch mBuiltinCommand.checkArguments(command: bcmd, arguments: execcmd.arguments) {
-                        case .success(let args):
-                                var result: Array<KSStatement> = []
-                                let pid = uniqProcessId()
-                                result.append(KSAllocateBuiltinCommandStatement(processId: pid, command: bcmd, arguments: args))
-                                result.append(KSRunProcessStatement(processId: pid))
-                                result.append(KSWaitProcessStatement(processId: pid))
-                                return .success(result)
-                        case .failure(let err):
-                                return .failure(err)
-                        }
-                } else {
-                        /* Check command existence */
-                        switch mEnvVariable.fileNameToExecutableCommandPath(fileName: execcmd.commandPath) {
-                        case .success(let cmdurl):
-                                var result: Array<KSStatement> = []
-                                let pid       = uniqProcessId()
-                                result.append(KSAllocateProcessStatement(processId: pid, commandPath: cmdurl.path, arguments: execcmd.arguments))
-                                result.append(KSRunProcessStatement(processId: pid))
-                                result.append(KSWaitProcessStatement(processId: pid))
-                                return .success(result)
-                        case .failure(let err):
-                                return .failure(err)
-                        }
-                }
-        }
-
-        private func uniqProcessId() -> Int {
-                let pid = mProcessId
-                mProcessId += 1
-                return pid
-        }
-}
-*/
 

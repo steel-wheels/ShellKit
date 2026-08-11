@@ -39,6 +39,10 @@
 		05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC6B192F66319D00E134DA /* MultiDataKit.xcframework */; };
 		05DC6B502F66373A00E134DA /* KSReadLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DC6B4F2F66373A00E134DA /* KSReadLine.swift */; };
 		05DC6B512F66373A00E134DA /* KSReadLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DC6B4F2F66373A00E134DA /* KSReadLine.swift */; };
+		05DDEEEB3029D3100022BDAF /* which.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 059388AD3029C21100BE45D5 /* which.js */; };
+		05DDEEEC3029D3100022BDAF /* printenv.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0520E945302935A800FADF44 /* printenv.js */; };
+		05DDEEEE3029D3330022BDAF /* which.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 059388AD3029C21100BE45D5 /* which.js */; };
+		05DDEEEF3029D3330022BDAF /* printenv.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0520E945302935A800FADF44 /* printenv.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +116,28 @@
 			dstSubfolderSpec = 7;
 			files = (
 				053594BE300CA1F0007052B3 /* Library.d.ts in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		05DDEEEA3029D2F30022BDAF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Script;
+			dstSubfolderSpec = 7;
+			files = (
+				05DDEEEB3029D3100022BDAF /* which.js in CopyFiles */,
+				05DDEEEC3029D3100022BDAF /* printenv.js in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		05DDEEED3029D3230022BDAF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Script;
+			dstSubfolderSpec = 7;
+			files = (
+				05DDEEEE3029D3330022BDAF /* which.js in CopyFiles */,
+				05DDEEEF3029D3330022BDAF /* printenv.js in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +433,7 @@
 				053594B7300CA151007052B3 /* CopyFiles */,
 				053594B9300CA17E007052B3 /* CopyFiles */,
 				059388AC3029C1A000BE45D5 /* ShellScript */,
+				05DDEEEA3029D2F30022BDAF /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -432,6 +459,7 @@
 				053594BB300CA1D2007052B3 /* CopyFiles */,
 				053594BD300CA1E4007052B3 /* CopyFiles */,
 				059388AE3029C22100BE45D5 /* ShellScript */,
+				05DDEEED3029D3230022BDAF /* CopyFiles */,
 			);
 			buildRules = (
 			);

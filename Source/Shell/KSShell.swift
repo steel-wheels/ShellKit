@@ -74,12 +74,12 @@ public class KSShell
                 mPreference.load()
 
                 /* initializ environment variables */
-                let paths: Array<URL> = [
+                let searchpaths: Array<URL> = [
                         URL(fileURLWithPath: "/bin"),
                         URL(fileURLWithPath: "/usr/bin")
                 ]
                 let homedir = mPreference.homeDirectory
-                mEnvVariable.paths              = paths
+                mEnvVariable.searchPaths        = searchpaths
                 mEnvVariable.home               = homedir
                 mEnvVariable.currentDirectory   = homedir
 
@@ -198,7 +198,7 @@ public class KSShell
         private func executeCommand(commandLine str: String) {
                 switch KSCommandParser.parse(commandLine: str) {
                 case .success(let cmdlines):
-                        let transpiler = KSTranspiler(extension: mExtension)
+                        let transpiler = KSTranspiler(extension: mExtension, environment: mEnvVariable)
                         switch transpiler.transpile(commandLines: cmdlines) {
                         case .success(let txt):
                                 executeCommand(text: txt)
