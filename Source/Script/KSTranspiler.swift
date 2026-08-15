@@ -10,6 +10,7 @@ import JavaScriptKit
 import JavaScriptCore
 import Foundation
 
+@MainActor
 public class KSTranspiler
 {
         private enum Phase {
@@ -64,13 +65,29 @@ public class KSTranspiler
 
         private func transpile(phase: PhaseInfo, execCommand execcmd: KSExecCommand) -> Result<MIText, NSError> {
                 if let bcmd = KSBuiltinCommand.decodeByName(commandPath: execcmd.commandPath) {
-                        /* modift arguments */
-                        if let url = bcmd.executableURL {
-                                return transpileThread(phase: phase, arguments: execcmd.arguments, file: url)
-                        } else {
-                                let err = MIError.fileError(message: "No URL for command \(bcmd.commandName)")
-                                return .failure(err)
+                        let scripturl: URL
+                        switch bcmd {
+                        case .printEnvCommand, .whichCommand:
+                                if let url = bcmd.executableURL {
+                                        scripturl = url
+                                } else {
+                                        let err = MIError.fileError(message: "No URL for command \(bcmd.commandName)")
+                                        return .failure(err)
+                                }
+                        case .runCommand:
+                                switch phase.phase {
+                                case .allocation, .wait:
+                                        scripturl = URL(filePath: "/dev/null")
+                                case .run:
+                                        if let url = selectScriptForRun(arguments: execcmd.arguments) {
+                                                scripturl = url
+                                        } else {
+                                                let err = MIError.fileError(message: "Failed to select run script")
+                                                return .failure(err)
+                                        }
+                                }
                         }
+                        return transpileThread(phase: phase, arguments: execcmd.arguments, file: scripturl)
                 } else {
                         return transpileProcess(phase: phase, systemCommand: execcmd)
                 }
@@ -106,17 +123,6 @@ public class KSTranspiler
                 let pid = phase.id
                 let thdname = "thd\(pid)"
 
-                var arguments: String = "["
-                var is1starg = true
-                for arg in args {
-                        if !is1starg { arguments += ", " }
-                        arguments += "\"" + arg + "\""
-                        is1starg = false
-                }
-                arguments += "]"
-
-                let urlstr: String = "newURL(\"" + url.path + "\")"
-
                 switch phase.phase {
                 case .allocation:
                         let inf  = inputFileHandleName(processId: pid)
@@ -125,6 +131,17 @@ public class KSTranspiler
                         let scr  = "let \(thdname) = allocateThread(\(inf), \(outf), \(errf)) ;"
                         return .success(MILine(line: scr))
                 case .run:
+                        var arguments: String = "["
+                        var is1starg = true
+                        for arg in args {
+                                if !is1starg { arguments += ", " }
+                                arguments += "\"" + arg + "\""
+                                is1starg = false
+                        }
+                        arguments += "]"
+
+                        NSLog("script url: \(url.path)")
+                        let urlstr: String = "newURL(\"" + url.path + "\")"
                         let scr  = "startThreadWithFile(\(thdname), \(arguments), \(urlstr)) ;"
                         return .success(MILine(line: scr))
                 case .wait:
@@ -143,6 +160,20 @@ public class KSTranspiler
 
         private func errorFileHandleName(processId pid: Int) -> String {
                 return KSLibrary.BuiltinName.standardErrorFileHandle.rawValue
+        }
+
+        private func selectScriptForRun(arguments args: Array<String>) -> URL? {
+                let result: URL?
+                if args.count == 0 {
+                        if let url = selectFile() {
+                                result = url
+                        } else {
+                                result = nil
+                        }
+                } else {
+                        result = URL(filePath: args[0])
+                }
+                return result
         }
 
         private func selectFile() -> URL? {

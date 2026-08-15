@@ -10,6 +10,7 @@ import JavaScriptKit
 import JavaScriptCore
 import Foundation
 
+@MainActor
 public class KSShell
 {
         private var mStandardInput:     FileHandle
@@ -70,7 +71,7 @@ public class KSShell
                 return mPreference
         }}
 
-        public func run() {
+        @MainActor public func run() {
                 /* load preference */
                 mPreference.load()
 
@@ -89,7 +90,10 @@ public class KSShell
                                           output: mStandardOutput,
                                           error:  mStandardError)
                 mStandardInput.setReader(reader: {
-                        (_ str: String) in self.receiveResponce(readline: readline, string: str)
+                        (_ str: String) in
+                        DispatchQueue.main.async {
+                                self.receiveResponce(readline: readline, string: str)
+                        }
                 })
                 mReadline = readline
 

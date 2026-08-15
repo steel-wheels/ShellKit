@@ -8,6 +8,7 @@
 import MultiDataKit
 import Foundation
 
+@MainActor
 open class KSShellExtension
 {
         public enum FileType {
