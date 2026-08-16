@@ -43,6 +43,8 @@
 		05DDEEEC3029D3100022BDAF /* printenv.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0520E945302935A800FADF44 /* printenv.js */; };
 		05DDEEEE3029D3330022BDAF /* which.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 059388AD3029C21100BE45D5 /* which.js */; };
 		05DDEEEF3029D3330022BDAF /* printenv.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0520E945302935A800FADF44 /* printenv.js */; };
+		05EA26D930315078009FB5C4 /* defaults.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 05EA26D830315064009FB5C4 /* defaults.json */; };
+		05EA26DA30315082009FB5C4 /* defaults.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 05EA26D830315064009FB5C4 /* defaults.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,7 @@
 			dstPath = Library;
 			dstSubfolderSpec = 7;
 			files = (
+				05EA26D930315078009FB5C4 /* defaults.json in CopyFiles */,
 				053594B8300CA166007052B3 /* Library.js in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +118,7 @@
 			dstPath = Library/types;
 			dstSubfolderSpec = 7;
 			files = (
+				05EA26DA30315082009FB5C4 /* defaults.json in CopyFiles */,
 				053594BE300CA1F0007052B3 /* Library.d.ts in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,6 +172,7 @@
 		05DC6B4F2F66373A00E134DA /* KSReadLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSReadLine.swift; sourceTree = "<group>"; };
 		05E842FB2F5CF6490021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05E8430C2F5CFBA50021856B /* ShellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		05EA26D830315064009FB5C4 /* defaults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = defaults.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -257,6 +262,7 @@
 		053594B0300CA03B007052B3 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				05EA26D830315064009FB5C4 /* defaults.json */,
 				053594B3300CA096007052B3 /* Library.js */,
 				053594B1300CA059007052B3 /* types */,
 			);

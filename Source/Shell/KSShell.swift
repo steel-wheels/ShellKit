@@ -74,6 +74,10 @@ public class KSShell
         @MainActor public func run() {
                 /* load preference */
                 mPreference.load()
+                if let err = mEnvVariable.loadDefaults(forClass: KSShell.self) {
+                        let msg = MIError.errorToString(error: err)
+                        NSLog("[Error] Failed to load default.json: \(msg)")
+                }
 
                 /* initializ environment variables */
                 let searchpaths: Array<URL> = [
