@@ -10,7 +10,6 @@ import JavaScriptKit
 import JavaScriptCore
 import Foundation
 
-@MainActor
 public class KSTranspiler
 {
         private enum Phase {
@@ -29,11 +28,9 @@ public class KSTranspiler
                 }
         }
 
-        private var mExtension:         KSShellExtension
         private var mEnvironment:       MIEnvVariables
 
-        public init(extension ext: KSShellExtension, environment env: MIEnvVariables) {
-                mExtension      = ext
+        public init(environment env: MIEnvVariables) {
                 mEnvironment    = env
         }
 
@@ -165,20 +162,11 @@ public class KSTranspiler
         private func selectScriptForRun(arguments args: Array<String>) -> URL? {
                 let result: URL?
                 if args.count == 0 {
-                        if let url = selectFile() {
-                                result = url
-                        } else {
-                                result = nil
-                        }
+                        result = nil
                 } else {
                         result = URL(filePath: args[0])
                 }
                 return result
-        }
-
-        private func selectFile() -> URL? {
-                guard mExtension.doesSupportFileSelector else { return nil }
-                return mExtension.selectFile(title: "Select the script", fileType: .file, extension: "js")
         }
 }
 

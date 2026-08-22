@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0500377C2FFBEDCC00653D4B /* KSShellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0500377B2FFBEDCC00653D4B /* KSShellExtension.swift */; };
-		0500377D2FFBEDCC00653D4B /* KSShellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0500377B2FFBEDCC00653D4B /* KSShellExtension.swift */; };
 		05082E5C2F792FB90016C704 /* KSCommandToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05082E5B2F792FB90016C704 /* KSCommandToken.swift */; };
 		05082E5D2F792FB90016C704 /* KSCommandToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05082E5B2F792FB90016C704 /* KSCommandToken.swift */; };
 		050E28022F912C7C00EC5CCE /* KSCommandLineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */; };
@@ -148,7 +146,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0500377B2FFBEDCC00653D4B /* KSShellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShellExtension.swift; sourceTree = "<group>"; };
 		0507EFF82F79E8CF003CBDC0 /* UnitTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		05082E5B2F792FB90016C704 /* KSCommandToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandToken.swift; sourceTree = "<group>"; };
 		050E28012F912C7C00EC5CCE /* KSCommandLineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandLineEditor.swift; sourceTree = "<group>"; };
@@ -295,7 +292,6 @@
 				054603D92F5D9AC3005CFCF9 /* KSShell.swift */,
 				05AA7CCE2F6D24AA004BADB7 /* KSPrompt.swift */,
 				05BD5DC42FA619100056E284 /* KSPreference.swift */,
-				0500377B2FFBEDCC00653D4B /* KSShellExtension.swift */,
 			);
 			path = Shell;
 			sourceTree = "<group>";
@@ -576,7 +572,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0500377D2FFBEDCC00653D4B /* KSShellExtension.swift in Sources */,
 				05082E5D2F792FB90016C704 /* KSCommandToken.swift in Sources */,
 				054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */,
 				0557D6FC2F9520610058C7E6 /* KSCommandParser.swift in Sources */,
@@ -594,7 +589,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0500377C2FFBEDCC00653D4B /* KSShellExtension.swift in Sources */,
 				05082E5C2F792FB90016C704 /* KSCommandToken.swift in Sources */,
 				054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */,
 				0557D6FD2F9520610058C7E6 /* KSCommandParser.swift in Sources */,

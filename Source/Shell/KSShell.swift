@@ -10,7 +10,6 @@ import JavaScriptKit
 import JavaScriptCore
 import Foundation
 
-@MainActor
 public class KSShell
 {
         private var mStandardInput:     FileHandle
@@ -18,7 +17,6 @@ public class KSShell
         private var mStandardError:     FileHandle
         private var mPreference:        KSPreference
         private var mVirtualMachine:    JSVirtualMachine
-        private var mExtension:         KSShellExtension
         private var mEnvVariable:       MIEnvVariables
         private var mDoExit:            Bool
         private var mPrompt:            KSPrompt
@@ -31,13 +29,12 @@ public class KSShell
                 case done
         }
 
-        public init(extension ext: KSShellExtension) {
+        public init() {
                 guard let vm = JSVirtualMachine() else {
                         fatalError("Failed to allocate virtual machine")
                 }
 
                 mDoExit                 = false
-                mExtension              = ext
                 mStandardInput          = FileHandle.standardInput
                 mStandardOutput         = FileHandle.standardOutput
                 mStandardError          = FileHandle.standardError
@@ -71,7 +68,7 @@ public class KSShell
                 return mPreference
         }}
 
-        @MainActor public func run() {
+        public func run() {
                 /* load preference */
                 mPreference.load()
                 if let err = mEnvVariable.loadDefaults(forClass: KSShell.self) {
@@ -95,9 +92,7 @@ public class KSShell
                                           error:  mStandardError)
                 mStandardInput.setReader(reader: {
                         (_ str: String) in
-                        DispatchQueue.main.async {
-                                self.receiveResponce(readline: readline, string: str)
-                        }
+                        self.receiveResponce(readline: readline, string: str)
                 })
                 mReadline = readline
 
@@ -106,7 +101,7 @@ public class KSShell
                 updateTerminalSize(row: 0, col: 0)
                 // wait until the update sequence done
                 while(mUpdateTerminalSizeState != .done){
-                        Thread.sleep(forTimeInterval: 0.01)
+                        Thread.sleep(forTimeInterval: 0.1)
                 }
 
                 // print prompt
@@ -120,11 +115,16 @@ public class KSShell
         }
 
         private func setupTerminal() {
-                let codes: Array<MIEscapeCode> = [
-                        .setForegroundColor(mPreference.foregroundColor),
-                        .setBackgroundColor(mPreference.backgroundColor)
-                ]
-                write(escapeCodes: codes)
+                var codes: Array<MIEscapeCode> = []
+                if let fgcol = mEnvVariable.foregroundColor {
+                        codes.append(.setForegroundColor(fgcol))
+                }
+                if let bgcol = mEnvVariable.backgroundColor {
+                        codes.append(.setBackgroundColor(bgcol))
+                }
+                if codes.count > 0 {
+                        write(escapeCodes: codes)
+                }
         }
 
         private var mUpdateTerminalSizeState:   UpdateTerminalSizeState = .initialize
@@ -157,6 +157,7 @@ public class KSShell
                         write(escapeCodes: ecodes)
                         mUpdateTerminalSizeState = .done
                 case .done:
+                        //NSLog("[3] updateTerminalSize: done")
                         break
                 }
         }
@@ -207,7 +208,7 @@ public class KSShell
         private func executeCommand(commandLine str: String) {
                 switch KSCommandParser.parse(commandLine: str) {
                 case .success(let cmdlines):
-                        let transpiler = KSTranspiler(extension: mExtension, environment: mEnvVariable)
+                        let transpiler = KSTranspiler(environment: mEnvVariable)
                         switch transpiler.transpile(commandLines: cmdlines) {
                         case .success(let txt):
                                 executeCommand(text: txt)
