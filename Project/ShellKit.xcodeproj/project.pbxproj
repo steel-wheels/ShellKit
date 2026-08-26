@@ -19,6 +19,10 @@
 		053594BA300CA1A9007052B3 /* Library.d.ts in CopyFiles */ = {isa = PBXBuildFile; fileRef = 053594B2300CA084007052B3 /* Library.d.ts */; };
 		053594BC300CA1DE007052B3 /* Library.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 053594B3300CA096007052B3 /* Library.js */; };
 		053594BE300CA1F0007052B3 /* Library.d.ts in CopyFiles */ = {isa = PBXBuildFile; fileRef = 053594B2300CA084007052B3 /* Library.d.ts */; };
+		053A5FB6303F2BC200DACB7C /* MultiUIKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 053A5FB5303F2BC200DACB7C /* MultiUIKit.xcframework */; };
+		053A5FB7303F2BC200DACB7C /* MultiUIKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 053A5FB5303F2BC200DACB7C /* MultiUIKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		053A5FB9303F2BD500DACB7C /* MultiUIKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 053A5FB5303F2BC200DACB7C /* MultiUIKit.xcframework */; };
+		053A5FBA303F2BD500DACB7C /* MultiUIKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 053A5FB5303F2BC200DACB7C /* MultiUIKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		054603DB2F5D9AC3005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		054603E12F5D9B3A005CFCF9 /* KSShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054603D92F5D9AC3005CFCF9 /* KSShell.swift */; };
 		0546347A2F999014008D8549 /* KSTranspiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054634792F999014008D8549 /* KSTranspiler.swift */; };
@@ -121,6 +125,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		053A5FB8303F2BC200DACB7C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				053A5FB7303F2BC200DACB7C /* MultiUIKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		053A5FBB303F2BD500DACB7C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				053A5FBA303F2BD500DACB7C /* MultiUIKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		05DDEEEA3029D2F30022BDAF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,6 +182,7 @@
 		052A38802FA83F0F0078AD7B /* KSBuiltinCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSBuiltinCommand.swift; sourceTree = "<group>"; };
 		053594B2300CA084007052B3 /* Library.d.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Library.d.ts; sourceTree = "<group>"; };
 		053594B3300CA096007052B3 /* Library.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Library.js; sourceTree = "<group>"; };
+		053A5FB5303F2BC200DACB7C /* MultiUIKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiUIKit.xcframework; path = ../../../Library/Frameworks/MultiUIKit.xcframework; sourceTree = "<group>"; };
 		054603D92F5D9AC3005CFCF9 /* KSShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSShell.swift; sourceTree = "<group>"; };
 		054634792F999014008D8549 /* KSTranspiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSTranspiler.swift; sourceTree = "<group>"; };
 		0557D6F62F951D4D0058C7E6 /* KSCommandLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCommandLine.swift; sourceTree = "<group>"; };
@@ -205,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05DC6B1A2F66319D00E134DA /* MultiDataKit.xcframework in Frameworks */,
+				053A5FB6303F2BC200DACB7C /* MultiUIKit.xcframework in Frameworks */,
 				0590713C2FA165E40033FA4D /* JavaScriptKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05DC6B1D2F6631D000E134DA /* MultiDataKit.xcframework in Frameworks */,
+				053A5FB9303F2BD500DACB7C /* MultiUIKit.xcframework in Frameworks */,
 				0590713E2FA1662E0033FA4D /* JavaScriptKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +357,7 @@
 		05DC6B182F66319D00E134DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				053A5FB5303F2BC200DACB7C /* MultiUIKit.xcframework */,
 				0590713B2FA165E40033FA4D /* JavaScriptKit.xcframework */,
 				050E280E2F92740E00EC5CCE /* ShellKit.framework */,
 				050E280A2F9273E200EC5CCE /* ShellKit.xcframework */,
@@ -436,6 +466,7 @@
 				053594B9300CA17E007052B3 /* CopyFiles */,
 				059388AC3029C1A000BE45D5 /* ShellScript */,
 				05DDEEEA3029D2F30022BDAF /* CopyFiles */,
+				053A5FB8303F2BC200DACB7C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -462,6 +493,7 @@
 				053594BD300CA1E4007052B3 /* CopyFiles */,
 				059388AE3029C22100BE45D5 /* ShellScript */,
 				05DDEEED3029D3230022BDAF /* CopyFiles */,
+				053A5FBB303F2BD500DACB7C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
